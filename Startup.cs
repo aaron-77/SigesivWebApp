@@ -27,8 +27,10 @@ namespace SigesivServer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<Models.Usuario>();
-            services.AddControllers();
+            services.AddControllersWithViews();
+           
             services.AddSwaggerGen(c =>
+            
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "SigesivServer", Version = "v1" });
             });
@@ -49,7 +51,7 @@ namespace SigesivServer
             app.UseRouting();
 
             app.UseAuthorization();
-
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

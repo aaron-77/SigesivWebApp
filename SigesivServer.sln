@@ -5,6 +5,8 @@ VisualStudioVersion = 17.1.32407.343
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SigesivServer", "SigesivServer.csproj", "{4180883E-002A-4A40-A423-57654573FF71}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SigesivServerTests", "..\..\SigesivServerTests\SigesivServerTests.csproj", "{75027991-62FE-4442-B743-18575BF08514}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{4180883E-002A-4A40-A423-57654573FF71}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4180883E-002A-4A40-A423-57654573FF71}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4180883E-002A-4A40-A423-57654573FF71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75027991-62FE-4442-B743-18575BF08514}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75027991-62FE-4442-B743-18575BF08514}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75027991-62FE-4442-B743-18575BF08514}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75027991-62FE-4442-B743-18575BF08514}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

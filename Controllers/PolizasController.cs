@@ -5,56 +5,64 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SigesivServer.Models;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Data.SqlClient;
+using SigesivServer.Models.Respuestas;
+using SigesivServer.Bd;
+using SigesivServer.Models.StoredProdecuresTypes;
+using SigesivServer.Models.Ef;
+using SigesivServer.utils;
 
 namespace SigesivServer.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class PolizasController : ControllerBase
+    public class PolizasController : Controller
     {
+
+        private static PolizasRepository polizasRepository = new PolizasRepository();
         private static readonly string[] Summaries = new[]
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 
-        private proyectoaseguradoraequipo5Context context;
+        
         private readonly ILogger<PolizasController> _logger;
-        private Usuario user;
         private String connectionString;
 
         public PolizasController(ILogger<PolizasController> logger)
         {
             _logger = logger;
-            user = new Usuario();
-            context = new proyectoaseguradoraequipo5Context();
-
-
-
-            
          }
         [HttpGet("obtenerPoliza")]
-        public async Task<ActionResult< sp_obtenerPolizaDeConductor>> Get(int id)
+        public async Task<ActionResult> Get(int id)
         {
-            try {
-                var polizaDeCondutor = context.sp_obtenerPolizaDeConductor.
-                FromSqlInterpolated($@"EXEC sp_obtenerPolizaDeConductor @idConductor={id}").AsAsyncEnumerable();
-               
-                await foreach (var poliza in polizaDeCondutor) {
-                    return poliza;
-                }
-                /*
-                await foreach (var poliza in polizaDeCondutor) { 
-                    Console.WriteLine(poliza.id);
-                }
-                */
-            }
-            catch (Exception ex) {
-                Console.WriteLine(ex.Message);
-            }
             
-            return NotFound();
+            RespuestaPolizaDeConductor response = new RespuestaPolizaDeConductor();
+            var resultado =  await polizasRepository.consultarPoliza(id);
+            response.data = resultado.Value;
+            return View("Index", response);
+          
+        }
+        [HttpGet("inicio")]
+        public IActionResult inicio(int id) {
+            Role rol = new Role() {
+                Id = 1,
+                Rol = "CONDUCTOREJECUTIVODEASISTENCIAAJUSTADORADMINSTRADOR"
+            };
+            return null;   
+        }
+
+        [HttpPost("comprarPoliza")]
+        public async Task<ActionResult<RespuestaPolizaDeConductor>> comporarPoliza([FromBody] PolizaCompleta polizaCompleta)
+        {
+
+            RespuestaPolizaDeConductor response = new RespuestaPolizaDeConductor();
+            var resultado = await polizasRepository.comprarPoliza(polizaCompleta);
+            response.data = resultado;
+            return View("Index",response);
+
         }
 
     } 
