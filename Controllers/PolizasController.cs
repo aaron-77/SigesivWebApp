@@ -20,7 +20,7 @@ namespace SigesivServer.Controllers
     [Route("[controller]")]
     public class PolizasController : Controller
     {
-
+        //cambio de prueba rama backend
         private static PolizasRepository polizasRepository = new PolizasRepository();
         private static readonly string[] Summaries = new[]
         {
