@@ -35,8 +35,26 @@ namespace SigesivServer.Controllers
         {
             _logger = logger;
          }
+
+        /*
+            registra una nueva poliza del conductror,hace  el proceso comleto incluido el pago
+         */
+        [HttpPost("comprarPoliza")]
+        public async Task<ActionResult<RespuestaPolizaDeConductor>> comprarPoliza([FromBody] PolizaCompleta polizaCompleta)
+        {
+
+            RespuestaPolizaDeConductor response = new RespuestaPolizaDeConductor();
+            var resultado = await polizasRepository.comprarPoliza(polizaCompleta);
+            response.data = resultado;
+            return View("Index", response);
+
+        }
+
+        /*
+         Consulta el detalle de la poliza del conductor
+         */
         [HttpGet("obtenerPoliza")]
-        public async Task<ActionResult> Get(int id)
+        public async Task<ActionResult> obtenerDetalleDePoliza(int id)
         {
             
             RespuestaPolizaDeConductor response = new RespuestaPolizaDeConductor();
@@ -45,25 +63,18 @@ namespace SigesivServer.Controllers
             return View("Index", response);
           
         }
+
+        
         [HttpGet("inicio")]
         public IActionResult inicio(int id) {
             Role rol = new Role() {
                 Id = 1,
                 Rol = "CONDUCTOREJECUTIVODEASISTENCIAAJUSTADORADMINSTRADOR"
             };
-            return null;   
+            return View("index");   
         }
 
-        [HttpPost("comprarPoliza")]
-        public async Task<ActionResult<RespuestaPolizaDeConductor>> comporarPoliza([FromBody] PolizaCompleta polizaCompleta)
-        {
-
-            RespuestaPolizaDeConductor response = new RespuestaPolizaDeConductor();
-            var resultado = await polizasRepository.comprarPoliza(polizaCompleta);
-            response.data = resultado;
-            return View("Index",response);
-
-        }
+        
 
     } 
 }
