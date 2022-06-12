@@ -4,8 +4,8 @@
     {
         public int id { get; set; }
         public int fkAsegurado { get; set; }
-        public int fkVehiculoAsegurado { get; set; }
-        public int fkPersonal { get; set; }
+        public int? fkVehiculoAsegurado { get; set; }
+        public int? fkPersonal { get; set; }
         public decimal latitud { get; set; }
         public decimal longitud { get; set; }
         public string urlImagen1 { get; set; }
