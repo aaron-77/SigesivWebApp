@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using SigesivServer.Models.StoredProdecuresTypes;
+using SigesivServer.Models.ViewModels;
 
 #nullable disable
 
@@ -37,12 +38,14 @@ namespace SigesivServer.Models
         public virtual DbSet<Usuario> Usuarios { get; set; }
         public virtual DbSet<Vehiculosasegurado> Vehiculosasegurados { get; set; }
         public virtual DbSet<ViewModel_detalleDePolizaDeConductor> poliza { get; set; }
-        public virtual DbSet<CasoDeCobertura> sp_obtenerCoberturaDePoliza { get; set; }
+        public virtual DbSet<CasoDeCobertura> obtenerCobertura { get; set; }
         public virtual DbSet<Models.StoredProdecuresTypes.Pago> Pago { get; set; }
         public virtual DbSet<Models.StoredProdecuresTypes.Asegurado> Asegurado { get; set; }
         public virtual DbSet<Poliza> Poliza { get; set; }
         public virtual DbSet<Models.StoredProdecuresTypes.Usuario> Usuario { get; set; }
         public virtual DbSet<VehiculoAsegurado> VehiculoAsegurado { get; set; }
+        public virtual DbSet<ViewModelPreviewPolizaDeConductor> previewPolizaDeConductor { get; set; }
+        public virtual DbSet<ViewModelTipoDeCobertura> tiposDeCobertura { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -817,6 +820,39 @@ namespace SigesivServer.Models
 
                 entity.Property(e => e.fkReporte)
                     .HasColumnName("fkReporte");
+            });
+
+            modelBuilder.Entity<Models.ViewModels.ViewModelPreviewPolizaDeConductor>(entity =>
+            {
+                entity.HasNoKey();
+                entity.Property(e => e.numeroDePoliza).HasColumnName("numeroDePoliza");
+
+                entity.Property(e => e.modelo)
+                    .HasColumnName("modelo");
+
+                entity.Property(e => e.fechaDeInicio)
+                    .HasColumnName("fechaDeInicio");
+
+                entity.Property(e => e.fechaDeExpiracion).HasColumnName("fechaDeExpiracion");
+
+                entity.Property(e => e.estado)
+                    .HasColumnName("nombreEstado");
+            });
+
+            modelBuilder.Entity<Models.ViewModels.ViewModelTipoDeCobertura>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.Property(e => e.id).HasColumnName("id");
+
+                entity.Property(e => e.tipoDeCobertura).HasColumnName("tipoDeCobertura");
+
+                entity.Property(e => e.lapsoDeCobertura)
+                    .HasColumnName("lapsoDeCobertura");
+
+                entity.Property(e => e.costo)
+                    .HasColumnName("costo");
+               
             });
 
 

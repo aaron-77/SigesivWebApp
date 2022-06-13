@@ -19,13 +19,14 @@ namespace SigesivServer.Controllers
         [HttpPost("crearReporte")]
         public async Task<ActionResult<RespuestaReporteDeIncidente>> registrarReporte([FromForm]ViewModelReporteDeIncidenteCompletoCreate reporte)
         {
+        
             RespuestaReporteDeIncidente response = new RespuestaReporteDeIncidente();
             //se crea objeto reporte a paertir de los datos del fomulario
             ViewModelReporteDeIncidenteCreate reporteConFotos = new ViewModelReporteDeIncidenteCreate();
             reporteConFotos.id = reporte.id;
             reporteConFotos.fkAsegurado = reporte.fkAsegurado;
             reporteConFotos.fkVehiculoAsegurado = reporte.fkVehiculoAsegurado;
-            reporteConFotos.fkEstado = reporte.fkEstado;
+            reporteConFotos.fkEstado = 13;
             reporteConFotos.latitud = reporte.latitud;
             reporteConFotos.longitud = reporte.longitud;
             reporteConFotos.urlImagen1 = reporte.urlImagen1;

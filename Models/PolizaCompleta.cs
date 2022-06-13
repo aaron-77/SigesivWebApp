@@ -7,7 +7,7 @@ namespace SigesivServer.Models.Ef
         public Models.StoredProdecuresTypes.Asegurado asegurado { get; set; }
         public VehiculoAsegurado vehiculosasegurado { get; set; }
         public Poliza polizadeseguro { get; set; }
-        public Models.StoredProdecuresTypes.Usuario usuario { get; set; }
+        public int usuario { get; set; }
 
     }
 }

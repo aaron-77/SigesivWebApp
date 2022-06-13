@@ -17,11 +17,8 @@ namespace SigesivServer.Bd
 {
     public class PolizasRepository : ConexionBD
     {
-
-
         public async Task<ViewModel_detalleDePolizaDeConductor> comprarPoliza(PolizaCompleta polizaCompleta)
         {
-            
             try
             {
                 ViewModel_detalleDePolizaDeConductor polizaCreada = new ViewModel_detalleDePolizaDeConductor();
@@ -38,22 +35,22 @@ namespace SigesivServer.Bd
                         List<Models.StoredProdecuresTypes.Asegurado> asegurados = new List<Models.StoredProdecuresTypes.Asegurado>();
                         List<Models.StoredProdecuresTypes.Poliza> polizas = new List<Models.StoredProdecuresTypes.Poliza>();
                         List<Models.StoredProdecuresTypes.VehiculoAsegurado> vehiculosasegurados = new List<Models.StoredProdecuresTypes.VehiculoAsegurado>();
-                        List<Models.StoredProdecuresTypes.Usuario> usuarios = new List<Models.StoredProdecuresTypes.Usuario>();
+                        //List<Models.StoredProdecuresTypes.Usuario> usuarios = new List<Models.StoredProdecuresTypes.Usuario>();
                         pagos2.Add(polizaCompleta.pago);
                         asegurados.Add(polizaCompleta.asegurado);
                         polizas.Add(polizaCompleta.polizadeseguro);
                         vehiculosasegurados.Add(polizaCompleta.vehiculosasegurado);
-                        usuarios.Add(polizaCompleta.usuario);
+                        //usuarios.Add(polizaCompleta.usuario);
                         DataTable pago2 = pagos2.ConvertToDataTable<Pago>();
                         DataTable asegurado = asegurados.ConvertToDataTable<Models.StoredProdecuresTypes.Asegurado>();
                         DataTable vehiculoasegurado = vehiculosasegurados.ConvertToDataTable<Models.StoredProdecuresTypes.VehiculoAsegurado>();
                         DataTable poliza = polizas.ConvertToDataTable<Models.StoredProdecuresTypes.Poliza>();
-                        DataTable usuario = usuarios.ConvertToDataTable<Models.StoredProdecuresTypes.Usuario>();
+                        //DataTable usuario = usuarios.ConvertToDataTable<Models.StoredProdecuresTypes.Usuario>();
                         DbHelper helper2 = new DbHelper();
                         SqlParameter parametro1 = helper2.CreateParameter("@pago", pago2, SqlDbType.Structured);
                         SqlParameter parametro2 = helper2.CreateParameter("@asegurado", asegurado, SqlDbType.Structured);
                         SqlParameter parametro3 = helper2.CreateParameter("@vehiculoAsegurado", vehiculoasegurado, SqlDbType.Structured);
-                        SqlParameter parametro4 = helper2.CreateParameter("@usuario", usuario, SqlDbType.Structured);
+                        SqlParameter parametro4 = helper2.CreateParameter("@usuario", polizaCompleta.usuario, SqlDbType.Int);
                         SqlParameter parametro5 = helper2.CreateParameter("@poliza", poliza, SqlDbType.Structured);
                         comando.Parameters.Add(parametro1);
                         comando.Parameters.Add(parametro2);
@@ -64,7 +61,7 @@ namespace SigesivServer.Bd
                         while (reader.Read())
                         {
                             polizaCreada.idAsegurado = (int)reader[0];
-                            polizaCreada.fechaDeNacimiento = (DateTime)reader[1];
+                            polizaCreada.fechaDeNacimiento = (reader[1] == DBNull.Value) ? null : (DateTime)reader[1];
                             polizaCreada.nombreCompleto = (string)reader[2];
                             polizaCreada.numeroDeLicencia = (string)reader[3];
                             polizaCreada.celular = (string)reader[4];
@@ -93,6 +90,9 @@ namespace SigesivServer.Bd
             }
             return null;
         }
+        /*
+         Consulta del detalle una una poliza
+         */
 
         public async Task<ActionResult<ViewModel_detalleDePolizaDeConductor>> consultarPoliza(int id) {
 
@@ -105,7 +105,7 @@ namespace SigesivServer.Bd
                     await foreach (var poliza in polizaDeCondutor)
                     {
                         var polizaObtenida = poliza;
-                        var casosDeCobertura = conexion.sp_obtenerCoberturaDePoliza.FromSqlInterpolated($@"EXEC sp_obtenerCoberturaDePoliza @idPoliza={polizaObtenida.idPoliza}").AsAsyncEnumerable();
+                        var casosDeCobertura = conexion.obtenerCobertura.FromSqlInterpolated($@"EXEC sp_obtenerCoberturaDePoliza @idPoliza={polizaObtenida.idPoliza}").AsAsyncEnumerable();
                         await foreach (var caso in casosDeCobertura)
                         {
                             polizaObtenida.casosDeCobertura.Add(caso);
@@ -113,6 +113,29 @@ namespace SigesivServer.Bd
                         return poliza;
                     }
                                
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return null;
+        }
+
+        public async Task<ActionResult<List<ViewModelPreviewPolizaDeConductor>>> consultarPolizasDelConductor(int id)
+        {
+
+            try
+            {
+                List<ViewModelPreviewPolizaDeConductor> polizasDelConductor = new List<ViewModelPreviewPolizaDeConductor>();
+                var polizaDeCondutor = conexion.previewPolizaDeConductor.
+                FromSqlInterpolated($@"EXEC sp_obtenerPreviewPolizasDeConductor @idConductor={id}").AsAsyncEnumerable();
+                await foreach (var poliza in polizaDeCondutor)
+                {
+                    polizasDelConductor.Add(poliza);   
+                  
+                }
+                return polizasDelConductor;
+
             }
             catch (Exception ex)
             {
@@ -147,6 +170,46 @@ namespace SigesivServer.Bd
             }
             return null;
         }
-        
+        public async Task<ActionResult<List<ViewModelTipoDeCobertura>>> consultarCatalogoTiposDeCobertura()
+        {
+
+            try
+            {
+
+                List<ViewModelTipoDeCobertura> listtiposDeCobertura = new List<ViewModelTipoDeCobertura>();
+                var tiposDeCobertura = conexion.tiposDeCobertura.
+                FromSqlInterpolated($@"EXEC sp_obtenerTodosLosTiposDeCobertura").AsAsyncEnumerable();
+                await foreach (var tipo in tiposDeCobertura)
+                {
+                    var tipoDeCoberturaObtenido = tipo;
+                    var casosDeCobertura = conexion.obtenerCobertura.FromSqlInterpolated($@"EXEC sp_obtenerCoberturaDeTipoCobertura @idTipoCobertura={tipoDeCoberturaObtenido.id}").AsAsyncEnumerable();
+                    await foreach (var caso in casosDeCobertura)
+                    {
+                        tipoDeCoberturaObtenido.casosDeCobertura.Add(caso);
+                    }
+                    listtiposDeCobertura.Add(tipoDeCoberturaObtenido);
+                }
+                return listtiposDeCobertura;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return null;
+        }
+        public List<ViewModelMarcas> consultarCatalogoDeMarcasConModelos() {
+            List<ViewModelMarcas> marcas = new List<ViewModelMarcas>();
+            var marcasConModelos = conexion.Marcas.Include(x => x.Modelos);
+            foreach (Marca marca in marcasConModelos) {
+                ViewModelMarcas marcaView = new ViewModelMarcas() {id=marca.Id,marca=marca.Marca1 };
+                foreach (Modelo modelo in marca.Modelos) {
+                    ViewModelModelo modeloView = new ViewModelModelo() { id = modelo.Id, modelo = modelo.Modelo1 };
+                    marcaView.modelos.Add(modeloView);
+                }
+                marcas.Add(marcaView);
+            }
+            return marcas;
+        }
+
     }
 }
