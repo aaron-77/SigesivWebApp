@@ -1,1 +1,0 @@
-Server=tcp:serveraseguradora.database.windows.net,1433;Initial Catalog=proyectoaseguradoraequipo5;Persist Security Info=False;User ID=aaron;Password=Mofos*.*;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
