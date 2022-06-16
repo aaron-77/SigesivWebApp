@@ -243,6 +243,25 @@ namespace SigesivServer.Bd
             }
             return null;
         }
+
+        public async Task<ActionResult<int>> asignarReporteDeIncidente(int idreporte, int idajustador)
+        {
+
+            
+            try
+            {
+                var resultado = await conexion.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_asignarReporteDeIncidente @reporte={idreporte},@personal={idajustador}");
+                return resultado;
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return null;
+
+        }
+
     }
 }
 
