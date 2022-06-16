@@ -1,0 +1,255 @@
+﻿@using SigesivServer.Models.Respuestas;
+@model RespuestaListadoPolizas;
+
+
+<body>
+
+    <button class="buttonClass">
+        @Html.ActionLink("Regresar","RegistrarReporte","Reportes")
+    </button>
+
+    <img class="imageMenu" src="https://th.bing.com/th/id/OIP.xnZHv2UfVzclmXZjyOGuxgHaHa?pid=ImgDet&rs=1" />
+    <div class="divTitulo">
+        <h1>Consultar Polizas</h1>
+        <div id="separador"></div>
+        <h3>seleccione la poliza que desee consultar a detalle:</h3>
+        <br />
+    </div>
+    <div class="divSeccion">
+        <h4>tabla de polizas contratadas:</h4>
+        <div class="tableStyle2">
+            <table>
+                <tr>
+                    <th> Numero de poliza</th>
+                    <th>modelo</th>
+                    <th>fecha de inicio</th>
+                    <th>fecha de expiracion</th>
+                    <th>estado</th>
+                </tr>
+                @foreach(var Poliza in @Model.data){
+                <tr class=" tableRowStyle">
+                    <td>@Poliza.numeroDePoliza </td>
+                    <td>@Poliza.modelo</td>
+                    <td>@Poliza.fechaDeInicio</td>
+                    <td>@Poliza.fechaDeExpiracion</td>
+                    <td>@Poliza.estado</td>
+
+                </tr>
+                }
+            </table>
+        </div>
+        <br />
+        <button class="buttonClass">
+            @Html.ActionLink("ConsultarPoliza","obtenerDetalleDePoliza","Polizas",new {idConductor=37})
+        </button>
+       
+    </div>
+
+    
+
+    <style>
+    .buttonClass {
+    background-color: dodgerblue;
+    padding: 6px;
+    border-radius: 10px;
+    width: 150px;
+    color: white;
+    text-align:center;
+}
+.containerClass{
+    text-align:center;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    width:100%;
+    gap:20px;
+    
+}
+.imageMenu{
+    position:relative;
+    right:20px;
+    left:90%;
+    top:20px;
+    height:50px;
+    width:50px;
+    
+}
+.divTitulo {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+}
+.divSeparacion {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    width: 100%;
+    gap: 20px;
+}
+.divbtnIzquierda {
+    display: flex;
+    width: 75%;
+}
+.divbtnDerecho {
+    display: flex;
+    width: 100%;
+    align-items: flex-start;
+}
+.divBotonesAccion {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    width: 100%;
+    gap: 20px;
+}
+
+h1{
+    margin:5px;
+}
+h2{
+    margin:0;
+}
+h3{
+    margin:0;
+}
+.tableStyle2 {
+    height: 100px;
+    background-color: #D9D9D9;
+    
+}
+.tableStyle {
+    height: 300px;
+    background-color: #D9D9D9;
+    width:100%
+    
+}
+.tableRowStyle{
+    width:100%;
+    
+    text-align:center;
+    justify-content:space-around;
+
+}
+table{
+    white-space:nowrap;
+}
+
+table {
+    /* cellspacing */
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+th {
+    /* This covers the th elements */
+}
+
+tr {
+    /* This covers the tr elements */
+}
+
+th, td {
+    /* cellpadding */
+    padding: 0;
+}
+table {
+    table-layout: fixed;
+    width: 100%;
+}
+#separador {
+    margin:3px;
+    height: 1px;
+    width: 50%;
+    background-color: #353535;
+}
+#separador2 {
+    margin: 3px;
+    height: 1px;
+    width: 80%;
+    background-color: #353535;
+}
+
+.divSeccion {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    gap:5px;
+}
+.imageCommon{
+    height:30px;
+    width:80px;
+    object-fit:cover;
+    margin-top:10px;
+}
+#barraderecha{
+    position:fixed;
+    height:100%;
+    right:0;
+    width:40px;
+    background-color:#353535;
+}
+.imageExtra{
+   
+    height:140px;
+    width:140px;
+    left:70px;
+   
+}
+.divHorizontal {
+    text-align: left;
+    
+    flex-direction: row;
+    gap: 20px;
+}
+.imageRightTop {
+    position: fixed;
+    height: 120px;
+    right: 160px;
+    top:60px;
+    
+}
+.imageLeftTop {
+    position: fixed;
+    height: 150px;
+    left: 185px;
+    top: 60px;
+}
+.imageRightBottom {
+    position: fixed;
+    height: 120px;
+    right: 160px;
+    bottom: 120px;
+}
+.inputData{
+    position:relative;
+    width:650px;
+   
+}
+.inputData2 {
+    position: relative;
+    width: 800px;
+    height:300px;
+}
+.divSeparacionFormal {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    width: 65%;
+    gap: 20px;
+}
+    </style>
+
+</body>
