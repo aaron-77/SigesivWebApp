@@ -1,0 +1,68 @@
+﻿<head>
+    <title>Add Map</title>
+
+    <style>
+        #map {
+            height: 400px;
+            /* The height is 400 pixels */
+            width: 100%;
+            /* The width is the width of the web page */
+        }
+    </style>
+    <script>
+        // Initialize and add the map
+        function initMap() {
+
+            navigator.geolocation.getCurrentPosition((pos) => {
+                console.log(pos.coords.latitude);
+                console.log(pos.coords.longitude);
+                let coords = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+                const map = new google.maps.Map(document.getElementById("map"), {
+                    zoom: 50,
+                    center: coords,
+                });
+                // The marker, positioned at Uluru
+                const marker = new google.maps.Marker({
+                    position: coords,
+                    map: map,
+                    draggable: true
+                });
+                marker.addListener("dragend", () => {
+                    console.log(marker.getPosition().lat());
+                    console.log(marker.getPosition().lng());
+                })
+            });
+
+        }
+    </script>
+</head>
+
+<body>
+    <h3>My Google Maps Demo</h3>
+    <!--The div element for the map -->
+    <div id="map"></div>
+
+    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDl5MVr9rh6vrdnYs16CA2Kp0JJUfT8SDs&callback=initMap&v=weekly"
+            async></script>
+    <div class="containerClass" style="text-align:center;display: flex;align-items: center;justify-content: center;flex-direction: column;width: 100%;" >
+        <p>seleccione continuar una vez seleccionada su ubicacion</p>
+    </div>
+    <div class="divBotonesAccion" style="text-align: center; display: flex; align-items: center; justify-content: center; flex-direction: row; width: 100%;gap: 20px;">
+        <input class="inputData3" type="number" id="latitud" name="latitud" placeholder="latitud:" required>
+        <input class="inputData3 "type="number" id="longitud" name="longitid" placeholder="longitud:" required>
+        <div class="divbtnIzquierda" style="display: flex; width: 75%;">
+            <button style=" background-color:forestgreen; padding:6px;border-radius:10px ; width:150px;color:white;text-align:center"> @Html.ActionLink("Regresar","RegistrarReporte","Reportes")</button>
+        </div>
+        <div class="divbtnDerecho" style="display: flex; width: 100%; align-items: flex-start;">
+            <button style="background-color: dodgerblue;padding: 6px;border-radius: 10px;width: 150px;color: white; text-align:center;"> @Html.ActionLink("Continuar","detalleReporte","Reportes")</button>
+        </div>
+
+    </div>
+    <style>
+        .inputData3{
+        position:relative;
+        width:300px
+        }
+    </style>
+</body>

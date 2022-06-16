@@ -1,0 +1,339 @@
+﻿<body>
+    <a class="bottom" style=" background-color:forestgreen; padding:6px;border-radius:10px ; width:100px;color:white">
+        <btn> Regresar</btn>
+    </a>
+
+    <img class="imageMenu" src="https://th.bing.com/th/id/OIP.xnZHv2UfVzclmXZjyOGuxgHaHa?pid=ImgDet&rs=1" />
+    <div class="divTitulo">
+        <h1>Comprar Poliza</h1>
+        <div id="separador"></div>
+        <h3>Verifique que los datos esten correctos antes de proceder a su pago:</h3>
+        <br />
+    </div>
+
+    <div class="containerClass">
+        <h4> Datos del Asegurado</h4>
+        
+            <div class="divSeccion">
+                <div class="divSeparacionFormal">
+                    <p>Nombre completo del asegurado:</p>
+                    <label>nombre ejemplo</label>
+                </div>
+            </div>
+            <div class="divSeccion">
+                <div class="divSeparacionFormal">
+                    <p>Fecha de nacimiento:</p>
+                    <label>fecha de nacimiento ejemplo:</label>
+                </div>
+            </div>
+            <div class="divSeccion">
+                <div class="divSeparacionFormal">
+                    <p>Numero de licencia:</p>
+                    <label>Numero licencia ejemplo</label>
+                </div>
+            </div>
+            <div class="divSeccion">
+                <div class="divSeparacionFormal">
+                    <p>Numero de Celular:</p>
+                    <label>Numero de cel ejemplo:</label>
+                </div>
+            </div>
+
+        <div id="separador2"></div>
+        <h4>Datos de la Poliza</h4>
+
+        <div class="divSeccion">
+            <div class="divSeparacionFormal">
+                <p>Numero de Poliza:</p>
+                <label>numero</label>
+            </div>
+        </div>
+        <div class="divSeccion">
+            <div class="divSeparacionFormal">
+                <p>Tipo de Cobertura:</p>
+                <label>tipo de cobertura</label>
+            </div>
+        </div>
+        <div class="divSeccion">
+            <div class="divSeparacionFormal">
+                <p>Plazo de Cobertura(años):</p>
+                <label>plazo</label>
+            </div>
+        </div>
+        <div class="divSeccion">
+            <div class="divSeparacionFormal">
+                <p>Fecha de Inicio de Seguro:</p>
+                <label>fecha inicio:</label>
+            </div>
+        </div>
+        <div class="divSeccion">
+            <div class="divSeparacionFormal">
+                <p>Fecha Expiracion:</p>
+                <label>fecha final</label>
+            </div>
+        </div>
+        <div class="divSeccion">
+            <div class="divSeparacionFormal">
+                <p>Casos de cobertura de la poliza:</p>
+                <label>casos</label>
+            </div>
+        </div>
+
+        
+        <div id="separador2"></div>
+        <h4>Datos de Vehiculo Asegurado</h4>
+
+        <div class="divSeccion">
+            <div class="divSeparacionFormal">
+                <p>Marca de Vehiculo:</p>
+                <label>marca de vehiculo</label>
+            </div>
+        </div>
+        <div class="divSeccion">
+            <div class="divSeparacionFormal">
+                <p>Modelo:</p>
+                <label>modelo ejemplo</label>
+            </div>
+        </div>
+        <div class="divSeccion">
+            <div class="divSeparacionFormal">
+                <p>Num de Placa:</p>
+                <label>num placa</label>
+            </div>
+        </div>
+        <div class="divSeccion">
+            <div class="divSeparacionFormal">
+                <p>Año:</p>
+                <label>año ejemplo</label>
+            </div>
+        </div>
+        <div class="divSeccion">
+            <div class="divSeparacionFormal">
+                <p>Color:</p>
+                <label>color ejemplo</label>
+            </div>
+        </div>
+
+        <br />
+        <p>seleccione otra poliza para ver su detalle</p>
+    </div>
+
+    <div class="divSeccion">
+        <div id="separador2"></div>
+        <h4>Datos del pago:</h4>
+        <p>Numero de Tarjeta:</p>
+        <input class="inputData" type="text" />
+
+        <p>Codigo CVV/CCV:</p>
+        <input class="inputData" type="text" />
+
+        <p>seleccione continuar para proceder con el pago</p>
+        <button class="buttonClass">Continuar</button>
+    </div>
+
+    <style>
+        
+.buttonClass {
+    background-color: dodgerblue;
+    padding: 6px;
+    border-radius: 10px;
+    width: 150px;
+    color: white;
+    text-align:center;
+}
+.containerClass{
+    text-align:center;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    width:100%;
+    gap:20px;
+    
+}
+.imageMenu{
+    position:relative;
+    right:20px;
+    left:90%;
+    top:20px;
+    height:50px;
+    width:50px;
+    
+}
+.divTitulo {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+}
+.divSeparacion {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    width: 100%;
+    gap: 20px;
+}
+.divbtnIzquierda {
+    display: flex;
+    width: 75%;
+}
+.divbtnDerecho {
+    display: flex;
+    width: 100%;
+    align-items: flex-start;
+}
+.divBotonesAccion {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    width: 100%;
+    gap: 20px;
+}
+
+h1{
+    margin:5px;
+}
+h2{
+    margin:0;
+}
+h3{
+    margin:0;
+}
+.tableStyle2 {
+    height: 100px;
+    background-color: #D9D9D9;
+    width: 80%
+}
+.tableStyle {
+    height: 300px;
+    background-color: #D9D9D9;
+    width:100%
+    
+}
+.tableRowStyle{
+    width:100%;
+    display:flex;
+    text-align:center;
+    justify-content:space-around;
+
+}
+table{
+    white-space:nowrap;
+}
+
+table {
+    /* cellspacing */
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+th {
+    /* This covers the th elements */
+}
+
+tr {
+    /* This covers the tr elements */
+}
+
+th, td {
+    /* cellpadding */
+    padding: 0;
+}
+table {
+    table-layout: fixed;
+    width: 100%;
+}
+#separador {
+    margin:3px;
+    height: 1px;
+    width: 50%;
+    background-color: #353535;
+}
+#separador2 {
+    margin: 3px;
+    height: 1px;
+    width: 80%;
+    background-color: #353535;
+}
+
+.divSeccion {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    gap:5px;
+}
+.imageCommon{
+    height:30px;
+    width:80px;
+    object-fit:cover;
+    margin-top:10px;
+}
+#barraderecha{
+    position:fixed;
+    height:100%;
+    right:0;
+    width:40px;
+    background-color:#353535;
+}
+.imageExtra{
+   
+    height:140px;
+    width:140px;
+    left:70px;
+   
+}
+.divHorizontal {
+    text-align: left;
+    
+    flex-direction: row;
+    gap: 20px;
+}
+.imageRightTop {
+    position: fixed;
+    height: 120px;
+    right: 160px;
+    top:60px;
+    
+}
+.imageLeftTop {
+    position: fixed;
+    height: 150px;
+    left: 185px;
+    top: 60px;
+}
+.imageRightBottom {
+    position: fixed;
+    height: 120px;
+    right: 160px;
+    bottom: 120px;
+}
+.inputData{
+    position:relative;
+    width:650px;
+   
+}
+.inputData2 {
+    position: relative;
+    width: 800px;
+    height:300px;
+}
+.divSeparacionFormal {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    width: 65%;
+    gap: 20px;
+}
+    </style>
+</body>
