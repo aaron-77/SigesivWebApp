@@ -47,6 +47,7 @@ namespace SigesivServer.Models
         public virtual DbSet<ViewModelPreviewPolizaDeConductor> previewPolizaDeConductor { get; set; }
         public virtual DbSet<ViewModelTipoDeCobertura> tiposDeCobertura { get; set; }
         public virtual DbSet<ViewModelReporteDeIncidenteSinAjustador> reporteSinAjustador { get; set; }
+        public virtual DbSet<ViewModelPersonalAjustadores> personalAjustador { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -891,6 +892,21 @@ namespace SigesivServer.Models
                 entity.Property(e => e.fkEstado).HasColumnName("fkEstado");
 
                 entity.Property(e => e.fechaDelReporte).HasColumnName("fechaDelReporte");
+            });
+
+            modelBuilder.Entity< Models.ViewModels.ViewModelPersonalAjustadores> (entity =>
+            {
+                entity.HasNoKey();
+
+                entity.Property(e => e.id).HasColumnName("id");
+
+                entity.Property(e => e.fkUsuario).HasColumnName("fkUsuario");
+
+                entity.Property(e => e.fkRol).HasColumnName("fkRol");
+
+                entity.Property(e => e.nombreCompleto).IsRequired().HasColumnName("nombreCompleto");
+
+                entity.Property(e => e.fechaDeIngreso).HasColumnName("fechaDeIngreso");
             });
 
 

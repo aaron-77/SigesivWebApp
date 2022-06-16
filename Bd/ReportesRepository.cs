@@ -246,7 +246,6 @@ namespace SigesivServer.Bd
 
         public async Task<ActionResult<int>> asignarReporteDeIncidente(int idreporte, int idajustador)
         {
-
             
             try
             {
