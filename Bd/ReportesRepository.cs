@@ -262,6 +262,30 @@ namespace SigesivServer.Bd
 
         }
 
+        public async Task<ActionResult<List<ViewModelReporteDeIncidenteSinAjustador>>> consultarReportesSinAjustador()
+        {
+
+            try
+            {
+                List<ViewModelReporteDeIncidenteSinAjustador> reportesSinAjustador = new List<ViewModelReporteDeIncidenteSinAjustador>();
+                var reporteSinAjustador = conexion.reporteSinAjustador.FromSqlInterpolated($@"EXEC sp_obtenerTodosLosReportesSinAjustador").AsAsyncEnumerable();
+
+                await foreach (var reporte in reporteSinAjustador)
+                {
+                    reportesSinAjustador.Add(reporte);
+                }
+                return reportesSinAjustador;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+
+            }
+            return null;
+
+        }
+
+
     }
 }
 

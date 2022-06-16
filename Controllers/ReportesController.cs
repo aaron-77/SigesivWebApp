@@ -83,6 +83,17 @@ namespace SigesivServer.Controllers
             return respuestaAsignacion;
         }
 
+        [HttpGet("obtenerReportesSinAsignar")]
+        public async Task<ActionResult<RespuestaTodosLosReportesSinAsignar>> consultarReportesSinAjustador()
+        {
+
+            RespuestaTodosLosReportesSinAsignar response = new RespuestaTodosLosReportesSinAsignar();
+            var resultado = await reportesRepository.consultarReportesSinAjustador();
+            response.data = resultado.Value;
+            return response;
+
+        }
+
 
     }
 }
