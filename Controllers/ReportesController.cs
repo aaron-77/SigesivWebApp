@@ -71,5 +71,18 @@ namespace SigesivServer.Controllers
             return response;
 
         }
+
+        
+        [HttpPut("asignarReporte")]
+        public async Task<ActionResult<RespuestaAsignacion>> asignarReporteDeIncidente([FromBody] int idreporte, int idajustador)
+        {
+            RespuestaAsignacion respuestaAsignacion = new RespuestaAsignacion();
+            var resultados = await reportesRepository.asignarReporteDeIncidente(idreporte, idajustador);
+            respuestaAsignacion.data = resultados.Value;
+
+            return respuestaAsignacion;
+        }
+
+
     }
 }
