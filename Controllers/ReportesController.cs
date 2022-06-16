@@ -71,6 +71,7 @@ namespace SigesivServer.Controllers
             return response;
 
         }
+        
         [HttpGet("CrearReporte")]
         public async Task<ActionResult<RespuestaReporteDeIncidente>> RegistrarReporte([FromForm] ViewModelReporteDeIncidenteCompletoCreate reporte)
         {
@@ -90,5 +91,27 @@ namespace SigesivServer.Controllers
             return View("ReporteDetalle");
 
         }
+  
+        [HttpPut("asignarReporte")]
+        public async Task<ActionResult<RespuestaAsignacion>> asignarReporteDeIncidente([FromBody] int idreporte, int idajustador)
+        {
+            RespuestaAsignacion respuestaAsignacion = new RespuestaAsignacion();
+            var resultados = await reportesRepository.asignarReporteDeIncidente(idreporte, idajustador);
+            respuestaAsignacion.data = resultados.Value;
+
+            return respuestaAsignacion;
+        }
+
+        [HttpGet("obtenerReportesSinAsignar")]
+        public async Task<ActionResult<RespuestaTodosLosReportesSinAsignar>> consultarReportesSinAjustador()
+        {
+
+            RespuestaTodosLosReportesSinAsignar response = new RespuestaTodosLosReportesSinAsignar();
+            var resultado = await reportesRepository.consultarReportesSinAjustador();
+            response.data = resultado.Value;
+            return response;
+
+        }
+
     }
 }
