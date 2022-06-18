@@ -12,7 +12,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "Polizas/inicio",
+      "launchUrl": "Polizas/ListaPolizas?idConductor=37",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
@@ -20,7 +20,7 @@
     "SigesivServer": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "Polizas/inicio",
+      "launchUrl": "Reportes/CrearReporte",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

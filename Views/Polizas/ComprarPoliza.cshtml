@@ -1,0 +1,424 @@
+﻿@using SigesivServer.Models.ViewModels;
+@model ViewModelCrearPoliza;
+
+<head>
+
+    <script>
+
+         let poliza = {
+            pago:{
+        id:0,
+        fkAsegurado:5,
+        numDeTarjeta:123221
+    },
+    asegurado:{
+        id:0,
+        fkUsuario:0,
+        nombreCompleto:"Marco Maximo",
+        fechaDeNacimiento:null,
+        numeroDeLicencia:"XCBNJGG-77",
+        celular:"2232637384"
+    },
+    vehiculosasegurado:{
+        id:0,
+        numeroDeSerie:"shha",
+        fkMarca:62,
+        fkModelo:6,
+        año:2022,
+        color:"amazul",
+        numeroDePlacas:"12123",
+        fkEstado:9
+    },
+    polizadeseguro:{
+        id:0,
+        numeroDePoliza:null,
+        fkVehiculoAsegurado:0,
+        fkAsegurado:0,
+        fkTipoDeCobertura:37,
+        fkPago:0,
+        fechaDeInicio:"2022-05-01",
+        fechaDeExpiracion:"2023-05-01",
+        costoTotal:10000,
+        fkEstado:9
+    },
+    usuario:19
+}
+
+        let tipos=@Model.catalogoTiposDeCobertura;
+
+        let idTipoSeleccionado = 0;
+        const $tiposDePoliza = document.getElementById("tiposDePoliza");
+        $tiposDePoliza.addEventListener("click",(evt)=>{
+            limpiarTabla();
+            let target = evt.currentTarget;
+            idTipoSeleccionado = target.dataset.idtipo;
+            let $tipo = tipos.find(tipo => tipo == idTipoSeleccionado);
+            let casosDeCobertura = tipo.casosDeCobertura;
+            let $casosDeCobertura = getElementById("coberturas");
+            for(let caso in $casosDeCobertura){
+                let $option = document.createElement("option");
+                $option.value = caso.nombreDelCaso; 
+                $casosDeCobertura.appendChild($option);
+            }
+
+        });
+
+        let limpiarTabla = () => {
+            let tabla = document.querySelector(".coberturas");
+            let filas = tabla.querySelectorAll(".row");
+            for (let fila of filas) {
+                fila.parentElement.removeChild(fila);
+            }
+
+        }
+
+        let form = document.getElementById("form1");
+        form.addEventListener("submit",(evt)=>{
+                evt.preventDefault();
+                let nombreCompleto= evt.currentTarget.getElementById("i1").value;
+                let fechaNacimiento= evt.currentTarget.getElementById("i2").value;
+                let numeroLicencia= evt.currentTarget.getElementById("i3").value;
+                let numeroCelular= evt.currentTarget.getElementById("i4").value;
+
+                let tiposDePoliza= evt.currentTarget.getElementById("tiposDePoliza").options[evt.currentTarget.getElementById("tiposDePoliza").selectedIndex].text;
+                let coberturas= evt.currentTarget.getElementById("coberturas").options[evt.currentTarget.getElementById("coberturas").selectedIndex].text;
+                let fechaInicio= evt.currentTarget.getElementById("fechaInicio").value;
+                let fechaFin= evt.currentTarget.getElementById("fechaFin").value;
+                let coberturas2= evt.currentTarget.getElementById("coberturas2").options[evt.currentTarget.getElementById("coberturas2").selectedIndex].text;
+
+                let marcaVehiculo= evt.currentTarget.getElementById("marcaVehiculo").options[evt.currentTarget.getElementById("marcaVehiculo").selectedIndex].text;
+                let modelo= evt.currentTarget.getElementById("modelo").options[evt.currentTarget.getElementById("modelo").selectedIndex].text;
+                let numeroPlaca= evt.currentTarget.getElementById("numeroPlaca").value;
+                let anio= evt.currentTarget.getElementById("anio").value;
+                let color= evt.currentTarget.getElementById("color").value;
+
+                let numeroTarjeta= evt.currentTarget.getElementById("numeroTarjeta").value;
+                
+                poliza.asegurado.nombreCompleto=nombreCompleto;
+                poliza.asegurado.fechaDeNacimiento=fechaNacimiento;
+                poliza.asegurado.numeroDeLicencia=numeroLicencia;
+                poliza.asegurado.celular=numeroCelular;
+
+                poliza.polizadeseguro.fkTipoDeCobertura=tiposDePoliza;
+                poliza.polizadeseguro.fechaDeInicio=fechaInicio;
+                poliza.polizadeseguro.fechaDeExpiracion=fechaFin;
+
+                poliza.vehiculosasegurado.fkMarca=marcaVehiculo;
+                poliza.vehiculosasegurado.fkModelo=modelo;
+                poliza.vehiculosasegurado.numeroDePlacas=numeroPLaca;
+                poliza.vehiculosasegurado.año=anio;
+                poliza.vehiculosasegurado.color=color;
+
+                poliza.pago.numDeTarjeta=numeroTarjeta;
+                poliza.pago.fkAsegurado=5;
+                poliza.usuario=25;
+
+                
+        });
+
+        let peticion=async()=>{
+            let resultado=fetch("http://localhost:37826/Polizas/comprarPoliza",poliza);
+            let jsonResult=resultado.json();
+        }
+
+       
+    </script>
+</head>
+<body>
+    <button style=" background-color:forestgreen; padding:6px;border-radius:10px ; width:150px;color:white;text-align:center"> @Html.ActionLink("Regresar","RegistrarReporte","Reportes")</button>
+
+    <img class="imageMenu" src="https://th.bing.com/th/id/OIP.xnZHv2UfVzclmXZjyOGuxgHaHa?pid=ImgDet&rs=1" />
+    <div class="divTitulo">
+        <h1>Comprar Poliza</h1>
+        <div id="separador"></div>
+        <h3>ingrese los datos que se le solicitan:</h3>
+        <br />
+    </div>
+
+
+    <form style="text-align: center; display: flex; align-items: center;justify-content: center; flex-direction: column; width: 100%; gap:5px;" action="" name="form1" id="form1">
+        <div id="separador2"></div>
+        <h4> Datos del Asegurado</h4>
+        
+        <input class="inputData3" type="text" id="i1" name="i1" placeholder="Nombre completo del asegurado:" required>
+        <input class="inputData3" type="date" id="i2" name="i2" placeholder="Fecha de nacimiento" required>
+        <input class="inputData3" type="text" id="i3" name="i3" placeholder="Numero de Licencia:" required>
+        <input class="inputData3 "type="text" id="i4" name="i4" placeholder="Numero de telefono:" required>
+         
+        <div id="separador2"></div>
+        <h4>Datos de la Poliza</h4>
+
+        <label for="tiposDePoliza">tipos de poliza:</label>
+        <select class="inputData3" name="tiposDePoliza" id="tiposDePoliza" required>
+            @foreach (var tipo in @Model.catalogoTiposDeCobertura)
+            {
+                <option data-idtipo="@tipo.id">@tipo.tipoDeCobertura</option>
+            }
+        </select>
+        <label for="coberturas">Plazos de Cobertura:</label>
+        <select class="inputData3" name="coberturas" id="coberturas" required></select>
+            
+        <label>fechaInicio:</label>
+        <input class="inputData3" type="date" id="fechaInicio" name="fechaInicio" required/>
+        <label>fechaFin:</label>
+        <input class="inputData3" type="date" id="fechaFin" name="fechaFin" required />
+        <label for="coberturas2">Casos de cobertura de la Poliza:</label>
+        <select class="inputData3" name="coberturas2" id="coberturas2" required ></select>
+
+        <div id="separador2"></div>
+        <h4>Datos de Vehiculo Asegurado</h4>
+
+        <label for="marcaVehiculo">Marca de Vehiculo:</label>
+        @{
+            List<ViewModelModelo> modelos = new List<ViewModelModelo>();
+        }
+        @foreach(var tipo in @Model.catalogoMarcasDeAuto){
+            modelos.AddRange(tipo.modelos);
+        }
+        <select class="inputData3" name="marcaVehiculo" id="marcaVehiculo" required>
+            @foreach (var tipo in @Model.catalogoMarcasDeAuto)
+            {
+                modelos = tipo.modelos;
+                <option data-fkmarca="@tipo.id">@tipo.marca</option>
+
+            }
+        </select>
+        <label for="modelo">Modelo:</label>
+        <select class="inputData3" name="modelo" id="modelo" required>
+            @foreach (var modelo in @modelos)
+            {
+                <option data-fkmodelo="@modelo.id">@modelo.modelo</option>
+            }
+        </select>
+        
+        <input class="inputData3" type="text" id="numeroPlaca" name="numeroPlaca" placeholder="Numero de Placa:" required>
+        <input class="inputData3" type="date" id="anio" name="anio" placeholder="Año:"required>
+        <input class="inputData3" type="text" id="color" name="color" placeholder="Color de Vehiculo:" required>
+
+        <div id="separador2"></div>
+        <h4>Datos del pago:</h4>
+
+        <input class="inputData3" type="text" id="numeroTarjeta" name="numeroTarjeta" placeholder="Numero de Tarjeta:"required>
+
+        <button class="buttonClass" type="submit">Comprar Poliza</button>
+    </form>
+
+    <style>
+.inputData3{
+    position:relative;
+    width:300px
+}       
+.buttonClass {
+    background-color: dodgerblue;
+    padding: 6px;
+    border-radius: 10px;
+    width: 150px;
+    color: white;
+    text-align:center;
+}
+.containerClass{
+    text-align:center;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    width:100%;
+    gap:20px;
+    
+}
+.imageMenu{
+    position:relative;
+    right:20px;
+    left:90%;
+    top:20px;
+    height:50px;
+    width:50px;
+    
+}
+.divTitulo {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+}
+.divSeparacion {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    width: 100%;
+    gap: 20px;
+}
+.divbtnIzquierda {
+    display: flex;
+    width: 75%;
+}
+.divbtnDerecho {
+    display: flex;
+    width: 100%;
+    align-items: flex-start;
+}
+.divBotonesAccion {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    width: 100%;
+    gap: 20px;
+}
+
+h1{
+    margin:5px;
+}
+h2{
+    margin:0;
+}
+h3{
+    margin:0;
+}
+.tableStyle2 {
+    height: 100px;
+    background-color: #D9D9D9;
+    width: 80%
+}
+.tableStyle {
+    height: 300px;
+    background-color: #D9D9D9;
+    width:100%
+    
+}
+.tableRowStyle{
+    width:100%;
+    display:flex;
+    text-align:center;
+    justify-content:space-around;
+
+}
+table{
+    white-space:nowrap;
+}
+
+table {
+    /* cellspacing */
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+th {
+    /* This covers the th elements */
+}
+
+tr {
+    /* This covers the tr elements */
+}
+
+th, td {
+    /* cellpadding */
+    padding: 0;
+}
+table {
+    table-layout: fixed;
+    width: 100%;
+}
+#separador {
+    margin:3px;
+    height: 1px;
+    width: 50%;
+    background-color: #353535;
+}
+#separador2 {
+    margin: 3px;
+    height: 1px;
+    width: 80%;
+    background-color: #353535;
+}
+
+.divSeccion {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    gap:5px;
+}
+.imageCommon{
+    height:30px;
+    width:80px;
+    object-fit:cover;
+    margin-top:10px;
+}
+#barraderecha{
+    position:fixed;
+    height:100%;
+    right:0;
+    width:40px;
+    background-color:#353535;
+}
+.imageExtra{
+   
+    height:140px;
+    width:140px;
+    left:70px;
+   
+}
+.divHorizontal {
+    text-align: left;
+    
+    flex-direction: row;
+    gap: 20px;
+}
+.imageRightTop {
+    position: fixed;
+    height: 120px;
+    right: 160px;
+    top:60px;
+    
+}
+.imageLeftTop {
+    position: fixed;
+    height: 150px;
+    left: 185px;
+    top: 60px;
+}
+.imageRightBottom {
+    position: fixed;
+    height: 120px;
+    right: 160px;
+    bottom: 120px;
+}
+.inputData{
+    position:relative;
+    width:650px;
+   
+}
+.inputData2 {
+    position: relative;
+    width: 800px;
+    height:300px;
+}
+.divSeparacionFormal {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    width: 65%;
+    gap: 20px;
+}
+.form{
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    gap:5px;
+}
+    </style>
+
+</body>
