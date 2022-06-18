@@ -1,5 +1,13 @@
-﻿<body>
-    <img class="imageMenu" src="https://th.bing.com/th/id/OIP.xnZHv2UfVzclmXZjyOGuxgHaHa?pid=ImgDet&rs=1" />
+﻿<html>
+@using SigesivServer.Models.Respuestas;
+@model RespuestaReportesSinAsignar_Ajustadores;
+<head>
+    <link rel="stylesheet" href="../../Content/StylesItems.css"/>
+</head>
+
+<body>
+    <form>
+           
     <div class="divTitulo">
 
         <h2>Dictaminar reporte</h2>
@@ -11,26 +19,41 @@
     <div class="divSeparacion">
         <div class="containerClass">
             <h5>a continuacion se presenta la tabla de ajustadores disponibles:</h5>
-            <div class="tableStyle">
 
-                <table>
-                    <thead>
-                        <tr class="tableRowStyle"> nombre</tr>
-                    </thead>
-                </table>
+            <div class="tableStyle">
+            <table>
+                <tr>
+                    <th> Nombre de Ajustador</th>
+                </tr>
+                @foreach(var Ajustador in @Model.data.listaAjustadores){
+                <tr class=" tableRowStyle">
+                    <td>@Ajustador.nombreCompleto</td>
+
+                </tr>
+                }
+            </table>
             </div>
+
+
         </div>
 
         <div class="containerClass">
             <h5> a continuacion se presenta la tabla de reportes registrados:</h5>
-            <div class="tableStyle">
-                <table>
-                    <tr class=" tableRowStyle">
-                        <td>no.Reporte </td>
-                        <td>Estado</td>
-                    </tr>
 
-                </table>
+            <div class="tableStyle">
+            <table>
+                <tr>
+                    <th> Numero de Reporte</th>
+                    <th>Estado</th>
+                </tr>
+                @foreach(var Reporte in @Model.data.listaReportesSinAjustador){
+                <tr class=" tableRowStyle">
+                    <td>@Reporte.id </td>
+                    <td>@Reporte.fkEstado</td>
+
+                </tr>
+                }
+            </table>
             </div>
         </div>
     </div>
@@ -39,16 +62,12 @@
 
     <div class="divSeparacion">
         <p>Nombre de ajustador:</p>
-        <label>
-            nombre
-        </label>
+         <label></label>
 
         <label>ASIGNAR A:</label>
 
         <p>Numero de Reporte:</p>
-        <label>
-            num
-        </label>
+         <label></label>
     </div>
 
 
@@ -65,6 +84,7 @@
         </div>
 
     </div>
+    </form>
 
     <style>
         
@@ -272,4 +292,4 @@ table {
 }
     </style>
 </body>
-
+</html>
