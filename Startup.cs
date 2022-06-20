@@ -43,6 +43,7 @@ namespace SigesivServer
 
             app.UseCors(options =>
             {
+                //agregando cors
                 options.AllowAnyOrigin();
                 options.AllowAnyMethod();
                 options.AllowAnyHeader();
