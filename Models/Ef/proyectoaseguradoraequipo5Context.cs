@@ -49,6 +49,7 @@ namespace SigesivServer.Models
         public virtual DbSet<ViewModelReporteDeIncidenteSinAjustador> reporteSinAjustador { get; set; }
         public virtual DbSet<ViewModelPersonalAjustadores> personalAjustador { get; set; }
         public virtual DbSet<ViewModelUsuarioRegistrado> usuarioRegistrado { get; set; }
+        public virtual DbSet<ViewModelAseguradoConUsername> aseguradoConUsername { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -928,8 +929,26 @@ namespace SigesivServer.Models
 
             });
 
+            modelBuilder.Entity<Models.ViewModels.ViewModelAseguradoConUsername>(entity =>
+            {
+                entity.HasNoKey();
 
-        OnModelCreatingPartial(modelBuilder);
+                entity.Property(e => e.id).HasColumnName("id");
+
+                entity.Property(e => e.nombreCompleto).HasColumnName("nombreCompleto");
+
+                entity.Property(e => e.fkUsuario)
+                    .IsRequired()
+                    .HasColumnName("fkUsuario");
+
+                entity.Property(e => e.username)
+                    .IsRequired()
+                    .HasColumnName("username");
+
+            });
+
+
+            OnModelCreatingPartial(modelBuilder);
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
