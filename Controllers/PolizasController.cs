@@ -66,13 +66,19 @@ namespace SigesivServer.Controllers
           
         }
         [HttpGet("obtenerPolizas")]
-        public async Task<ActionResult> obtenerTodasLasPolizasDelConductor(int idConductor)
+        public async Task<ActionResult<RespuestaTodasLasPolizasDelConductor>> obtenerTodasLasPolizasDelConductor(int idConductor)
         {
 
             RespuestaTodasLasPolizasDelConductor response = new RespuestaTodasLasPolizasDelConductor();
             var resultado = await polizasRepository.consultarPolizasDelConductor(idConductor);
+            if (resultado == null) {
+                response.status = 0;
+                response.mensaje = "error al cargar las polizas";
+                response.data = null;
+                response.errores = null;
+            }
             response.data = resultado.Value;
-            return View("Index", response);
+            return response;
 
         }
 
