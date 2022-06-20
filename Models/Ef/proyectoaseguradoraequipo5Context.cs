@@ -945,6 +945,10 @@ namespace SigesivServer.Models
                     .IsRequired()
                     .HasColumnName("username");
 
+                entity.Property(e => e.fkRol)
+                    .IsRequired()
+                    .HasColumnName("fkRol");
+
             });
 
 
