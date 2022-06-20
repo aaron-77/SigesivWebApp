@@ -37,7 +37,7 @@ namespace SigesivServer.Controllers
             polizaCompleta.polizadeseguro.fkEstado = 9;
             var resultado = await polizasRepository.comprarPoliza(polizaCompleta);
             response.data = resultado;
-            return View("Index", response);
+            return response;
 
         }
         [HttpGet("comprarPoliza")]
@@ -48,7 +48,7 @@ namespace SigesivServer.Controllers
             modelCrearPoliza.catalogoTiposDeCobertura =  (await polizasRepository.consultarCatalogoTiposDeCobertura()).Value;
             modelCrearPoliza.catalogoMarcasDeAuto = polizasRepository.consultarCatalogoDeMarcasConModelos();
             
-            return View("CrearPoliza",modelCrearPoliza);
+            return View("ComprarPoliza",modelCrearPoliza);
 
         }
 
@@ -62,7 +62,7 @@ namespace SigesivServer.Controllers
             RespuestaPolizaDeConductor response = new RespuestaPolizaDeConductor();
             var resultado =  await polizasRepository.consultarPoliza(idConductor);
             response.data = resultado.Value;
-            return View("Index", response);
+            return View("DetallePoliza", response);
           
         }
         [HttpGet("obtenerPolizas")]
@@ -86,7 +86,20 @@ namespace SigesivServer.Controllers
             return View("index");   
         }
 
+        [HttpGet("ListaPolizas")]
+        public async Task<ActionResult> obtenerListaPolizas(int idConductor)
+        {
+
+            RespuestaListadoPolizas response = new RespuestaListadoPolizas();
+            var resultado = await polizasRepository.consultarPolizasDelConductor (idConductor);
+            response.data = resultado.Value;
+            return View("ListaPolizas", response);
+
+        }
         
+
+
+
 
     } 
 }
