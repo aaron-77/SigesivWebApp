@@ -1,0 +1,348 @@
+﻿@using SigesivServer.Models.Respuestas;
+@model RespuestaPolizaDeConductor;
+
+<body>
+<div class="divTitulo">
+        <h1>Detalle poliza</h1>
+        <div id="separador2"></div>
+    </div>
+
+    <div class="containerClass">
+        <h4> Datos del Asegurado</h4>
+        
+            <div class="divSeccion">
+                <div class="divSeparacionFormal">
+                    <p>Nombre completo del asegurado:</p>
+                    <label>@Model.data.nombreCompleto</label>
+                </div>
+            </div>
+            <div class="divSeccion">
+                <div class="divSeparacionFormal">
+                    <p>Fecha de nacimiento:</p>
+                    <label>@Model.data.fechaDeNacimiento</label>
+                </div>
+            </div>
+            <div class="divSeccion">
+                <div class="divSeparacionFormal">
+                    <p>Numero de licencia:</p>
+                    <label>@Model.data.numeroDeLicencia</label>
+                </div>
+            </div>
+            <div class="divSeccion">
+                <div class="divSeparacionFormal">
+                    <p>Numero de Celular:</p>
+                    <label>@Model.data.celular</label>
+                </div>
+            </div>
+
+        <div id="separador2"></div>
+        <h4>Datos de la Poliza</h4>
+
+        <div class="divSeccion">
+            <div class="divSeparacionFormal">
+                <p>Numero de Poliza:</p>
+                <label>@Model.data.numeroDePoliza</label>
+            </div>
+        </div>
+        <div class="divSeccion">
+            <div class="divSeparacionFormal">
+                <p>Tipo de Cobertura:</p>
+                <label>@Model.data.tipoDeCobertura</label>
+            </div>
+        </div>
+        <div class="divSeccion">
+            <div class="divSeparacionFormal">
+                <p>Plazo de Cobertura(años):</p>
+                <label>@Model.data.lapsoDeCobertura</label>
+            </div>
+        </div>
+        <div class="divSeccion">
+            <div class="divSeparacionFormal">
+                <p>Fecha de Inicio de Seguro:</p>
+                <label>@Model.data.fechaDeInicio</label>
+            </div>
+        </div>
+        <div class="divSeccion">
+            <div class="divSeparacionFormal">
+                <p>Fecha Expiracion:</p>
+                <label>@Model.data.fechaDeExpiracion</label>
+            </div>
+        </div>
+        <div class="divSeccion">
+            <div class="divSeparacionFormal">
+                <p>Casos de cobertura de la poliza:</p>
+                <label>@Model.data.casosDeCobertura</label>
+                <div class="tableStyle2">
+                    <table>
+                        <tr>
+                            <th>nombre del caso</th>
+                            <th>condiciones </th>
+                        </tr>
+                    @foreach(var casosDeCobertura in @Model.data.casosDeCobertura){
+                    <tr class=" tableRowStyle">
+                        <td>@casosDeCobertura.nombreDelCaso </td>
+                        <td>@casosDeCobertura.condiciones</td>
+
+                    </tr>
+                    }
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+        
+        <div id="separador2"></div>
+        <h4>Datos de Vehiculo Asegurado</h4>
+
+        <div class="divSeccion">
+            <div class="divSeparacionFormal">
+                <p>Marca de Vehiculo:</p>
+                <label>@Model.data.marca</label>
+                 
+            </div>
+        </div>
+        <div class="divSeccion">
+            <div class="divSeparacionFormal">
+                <p>Modelo:</p>
+                <label>@Model.data.modelo</label>
+            </div>
+        </div>
+        <div class="divSeccion">
+            <div class="divSeparacionFormal">
+                <p>Num de Placa:</p>
+                <label>@Model.data.numeroDePlacas</label>
+            </div>
+        </div>
+        <div class="divSeccion">
+            <div class="divSeparacionFormal">
+                <p>Año:</p>
+                <label>@Model.data.año</label>
+            </div>
+        </div>
+        <div class="divSeccion">
+            <div class="divSeparacionFormal">
+                <p>Color:</p>
+                <label>@Model.data.color</label>
+            </div>
+        </div>
+
+        <br />
+        <p>seleccione otra poliza para ver su detalle</p>
+    </div>
+
+    <div class="divBotonesAccion">
+        
+        <div class="divbtnIzquierda">
+            <button style=" background-color:forestgreen; padding:6px;border-radius:10px ; width:150px;color:white;text-align:center"> @Html.ActionLink("Regresar","obtenerListaPolizas","Polizas",new {idConductor=37})</button>
+        </div>
+
+    </div>
+
+    <style>
+    .buttonClass {
+    background-color: dodgerblue;
+    padding: 6px;
+    border-radius: 10px;
+    width: 150px;
+    color: white;
+    text-align:center;
+}
+.containerClass{
+    text-align:center;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    width:100%;
+    gap:20px;
+    
+}
+.imageMenu{
+    position:relative;
+    right:20px;
+    left:90%;
+    top:20px;
+    height:50px;
+    width:50px;
+    
+}
+.divTitulo {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+}
+.divSeparacion {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    width: 100%;
+    gap: 20px;
+}
+.divbtnIzquierda {
+    display: flex;
+    width: 75%;
+}
+.divbtnDerecho {
+    display: flex;
+    width: 100%;
+    align-items: flex-start;
+}
+.divBotonesAccion {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    width: 100%;
+    gap: 20px;
+}
+
+h1{
+    margin:5px;
+}
+h2{
+    margin:0;
+}
+h3{
+    margin:0;
+}
+.tableStyle2 {
+    height: 100px;
+    background-color: #D9D9D9;
+    width: 80%
+}
+.tableStyle {
+    height: 300px;
+    background-color: #D9D9D9;
+    width:100%
+    
+}
+.tableRowStyle{
+    width:100%;
+    display:flex;
+    text-align:center;
+    justify-content:space-around;
+
+}
+table{
+    white-space:nowrap;
+}
+
+table {
+    /* cellspacing */
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+th {
+    /* This covers the th elements */
+}
+
+tr {
+    /* This covers the tr elements */
+}
+
+th, td {
+    /* cellpadding */
+    padding: 0;
+}
+table {
+    table-layout: fixed;
+    width: 100%;
+}
+#separador {
+    margin:3px;
+    height: 1px;
+    width: 50%;
+    background-color: #353535;
+}
+#separador2 {
+    margin: 3px;
+    height: 1px;
+    width: 80%;
+    background-color: #353535;
+}
+
+.divSeccion {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    gap:5px;
+}
+.imageCommon{
+    height:30px;
+    width:80px;
+    object-fit:cover;
+    margin-top:10px;
+}
+#barraderecha{
+    position:fixed;
+    height:100%;
+    right:0;
+    width:40px;
+    background-color:#353535;
+}
+.imageExtra{
+   
+    height:140px;
+    width:140px;
+    left:70px;
+   
+}
+.divHorizontal {
+    text-align: left;
+    
+    flex-direction: row;
+    gap: 20px;
+}
+.imageRightTop {
+    position: fixed;
+    height: 120px;
+    right: 160px;
+    top:60px;
+    
+}
+.imageLeftTop {
+    position: fixed;
+    height: 150px;
+    left: 185px;
+    top: 60px;
+}
+.imageRightBottom {
+    position: fixed;
+    height: 120px;
+    right: 160px;
+    bottom: 120px;
+}
+.inputData{
+    position:relative;
+    width:650px;
+   
+}
+.inputData2 {
+    position: relative;
+    width: 800px;
+    height:300px;
+}
+.divSeparacionFormal {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    width: 65%;
+    gap: 20px;
+}
+    </style>
+
+</body>
+

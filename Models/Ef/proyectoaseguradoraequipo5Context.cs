@@ -46,6 +46,9 @@ namespace SigesivServer.Models
         public virtual DbSet<VehiculoAsegurado> VehiculoAsegurado { get; set; }
         public virtual DbSet<ViewModelPreviewPolizaDeConductor> previewPolizaDeConductor { get; set; }
         public virtual DbSet<ViewModelTipoDeCobertura> tiposDeCobertura { get; set; }
+        public virtual DbSet<ViewModelReporteDeIncidenteSinAjustador> reporteSinAjustador { get; set; }
+        public virtual DbSet<ViewModelPersonalAjustadores> personalAjustador { get; set; }
+        public virtual DbSet<ViewModelUsuarioRegistrado> usuarioRegistrado { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -623,7 +626,7 @@ namespace SigesivServer.Models
 
                 entity.Property(e => e.id).HasColumnName("id");
 
-                entity.Property(e => e.año).HasColumnName("año");
+                entity.Property(e => e.ano).HasColumnName("año");
 
                 entity.Property(e => e.color)
                     .IsRequired()
@@ -837,6 +840,9 @@ namespace SigesivServer.Models
 
                 entity.Property(e => e.estado)
                     .HasColumnName("nombreEstado");
+
+                entity.Property(e => e.fkVehiculoAsegurado)
+                    .HasColumnName("fkVehiculoAsegurado");
             });
 
             modelBuilder.Entity<Models.ViewModels.ViewModelTipoDeCobertura>(entity =>
@@ -855,9 +861,78 @@ namespace SigesivServer.Models
                
             });
 
+            modelBuilder.Entity<Models.ViewModels.ViewModelReporteDeIncidenteSinAjustador>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.Property(e => e.id).HasColumnName("id");
+
+                entity.Property(e => e.fkAsegurado).HasColumnName("fkAsegurado");
+
+                entity.Property(e => e.fkVehiculoAsegurado).HasColumnName("fkVehiculoAsegurado");
+
+                entity.Property(e => e.fkPersonal).HasColumnName("fkPersonal");
+
+                entity.Property(e => e.latitud).HasColumnName("latitud");
+
+                entity.Property(e => e.longitud).HasColumnName("longitud");
+
+                entity.Property(e => e.urlImagen1).HasColumnName("urlImagen1");
+
+                entity.Property(e => e.urlImagen2).HasColumnName("urlImagen2");
+
+                entity.Property(e => e.urlImagen3).HasColumnName("urlImagen3");
+
+                entity.Property(e => e.urlImagen4).HasColumnName("urlImagen4");
+
+                entity.Property(e => e.urlImagen5).HasColumnName("urlImagen5");
+
+                entity.Property(e => e.urlImagen6).HasColumnName("urlImagen6");
+
+                entity.Property(e => e.urlImagen7).HasColumnName("urlImagen7");
+
+                entity.Property(e => e.urlImagen8).HasColumnName("urlImagen8");
+
+                entity.Property(e => e.fkEstado).HasColumnName("fkEstado");
+
+                entity.Property(e => e.fechaDelReporte).HasColumnName("fechaDelReporte");
+            });
+
+            modelBuilder.Entity< Models.ViewModels.ViewModelPersonalAjustadores> (entity =>
+            {
+                entity.HasNoKey();
+
+                entity.Property(e => e.id).HasColumnName("id");
+
+                entity.Property(e => e.fkUsuario).HasColumnName("fkUsuario");
+
+                entity.Property(e => e.fkRol).HasColumnName("fkRol");
+
+                entity.Property(e => e.nombreCompleto).IsRequired().HasColumnName("nombreCompleto");
+
+                entity.Property(e => e.fechaDeIngreso).HasColumnName("fechaDeIngreso");
+            });
+
+            modelBuilder.Entity<Models.ViewModels.ViewModelUsuarioRegistrado>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.Property(e => e.id).HasColumnName("id");
+
+                entity.Property(e => e.fkRol).HasColumnName("fkRol");
+
+                entity.Property(e => e.password)
+                    .IsRequired()
+                    .HasColumnName("password");
+
+                entity.Property(e => e.username)
+                    .IsRequired()
+                    .HasColumnName("username");
+
+            });
 
 
-            OnModelCreatingPartial(modelBuilder);
+        OnModelCreatingPartial(modelBuilder);
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

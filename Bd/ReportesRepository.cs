@@ -243,6 +243,48 @@ namespace SigesivServer.Bd
             }
             return null;
         }
+
+        public async Task<ActionResult<int>> asignarReporteDeIncidente(int idreporte, int idajustador)
+        {
+            
+            try
+            {
+                var resultado = await conexion.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_asignarReporteDeIncidente @reporte={idreporte},@personal={idajustador}");
+                return resultado;
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return null;
+
+        }
+
+        public async Task<ActionResult<List<ViewModelReporteDeIncidenteSinAjustador>>> consultarReportesSinAjustador()
+        {
+
+            try
+            {
+                List<ViewModelReporteDeIncidenteSinAjustador> reportesSinAjustador = new List<ViewModelReporteDeIncidenteSinAjustador>();
+                var reporteSinAjustador = conexion.reporteSinAjustador.FromSqlInterpolated($@"EXEC sp_obtenerTodosLosReportesSinAjustador").AsAsyncEnumerable();
+
+                await foreach (var reporte in reporteSinAjustador)
+                {
+                    reportesSinAjustador.Add(reporte);
+                }
+                return reportesSinAjustador;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+
+            }
+            return null;
+
+        }
+
+
     }
 }
 

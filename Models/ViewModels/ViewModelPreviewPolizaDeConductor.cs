@@ -9,6 +9,7 @@ namespace SigesivServer.Models.ViewModels
         public DateTime fechaDeInicio { get; set; }
         public DateTime fechaDeExpiracion { get; set; }
         public string estado { get; set; }
+        public int fkVehiculoAsegurado { get; set; }
 
     }
 }
