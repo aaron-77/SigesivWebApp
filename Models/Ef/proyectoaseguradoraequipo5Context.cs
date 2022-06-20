@@ -48,6 +48,7 @@ namespace SigesivServer.Models
         public virtual DbSet<ViewModelTipoDeCobertura> tiposDeCobertura { get; set; }
         public virtual DbSet<ViewModelReporteDeIncidenteSinAjustador> reporteSinAjustador { get; set; }
         public virtual DbSet<ViewModelPersonalAjustadores> personalAjustador { get; set; }
+        public virtual DbSet<ViewModelUsuarioRegistrado> usuarioRegistrado { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -912,9 +913,26 @@ namespace SigesivServer.Models
                 entity.Property(e => e.fechaDeIngreso).HasColumnName("fechaDeIngreso");
             });
 
+            modelBuilder.Entity<Models.ViewModels.ViewModelUsuarioRegistrado>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.Property(e => e.id).HasColumnName("id");
+
+                entity.Property(e => e.fkRol).HasColumnName("fkRol");
+
+                entity.Property(e => e.password)
+                    .IsRequired()
+                    .HasColumnName("password");
+
+                entity.Property(e => e.username)
+                    .IsRequired()
+                    .HasColumnName("username");
+
+            });
 
 
-            OnModelCreatingPartial(modelBuilder);
+        OnModelCreatingPartial(modelBuilder);
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
