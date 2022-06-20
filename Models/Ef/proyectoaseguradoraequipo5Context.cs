@@ -837,6 +837,9 @@ namespace SigesivServer.Models
 
                 entity.Property(e => e.estado)
                     .HasColumnName("nombreEstado");
+
+                entity.Property(e => e.fkVehiculoAsegurado)
+                    .HasColumnName("fkVehiculoAsegurado");
             });
 
             modelBuilder.Entity<Models.ViewModels.ViewModelTipoDeCobertura>(entity =>
