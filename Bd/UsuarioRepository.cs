@@ -9,11 +9,11 @@ namespace SigesivServer.Bd
 {
     public class UsuarioRepository : ConexionBD
     {
-        public async Task<ActionResult<ViewModelUsuarioRegistrado>> consultarSiUsuarioExiste(string username, string password)
+        public async Task<ActionResult<ViewModelAseguradoConUsername>> consultarSiUsuarioExiste(string username, string password)
         {
             try
             {              
-                var usuarioRegistrado = conexion.usuarioRegistrado.FromSqlInterpolated($@"EXEC sp_iniciarSesion @username={username}, @password={password}").AsAsyncEnumerable();
+                var usuarioRegistrado = conexion.aseguradoConUsername.FromSqlInterpolated($@"EXEC sp_obtenerInformacionUsuarioAsegurado @username={username}, @password={password}").AsAsyncEnumerable();
 
                 await foreach (var usuario in usuarioRegistrado)
                 {

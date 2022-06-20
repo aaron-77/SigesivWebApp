@@ -12,21 +12,15 @@ namespace SigesivServer.Controllers
         private static UsuarioRepository usuarioRepository = new UsuarioRepository();
 
         [HttpGet("obtenerUsuario")]
-        public async Task<ActionResult<RespuestaUsuarioRegistrado>> consultarSiUsuarioExiste([FromBody] string username, string password)
+        public async Task<ActionResult<RespuestaAseguradoConUsername>> consultarSiUsuarioExiste([FromBody] string username, string password)
         {
 
-            RespuestaUsuarioRegistrado response = new RespuestaUsuarioRegistrado();
+            RespuestaAseguradoConUsername response = new RespuestaAseguradoConUsername();
             var resultado = await usuarioRepository.consultarSiUsuarioExiste(username, password);
             response.data = resultado.Value;
-            if (response.data.fkRol == 27)
-                return View("MenuAjustadores", response);
-            if (response.data.fkRol == 25)
-            {
-
-                return View("MenuConductor", response);
-            }
             return response;
         }
+
 
     }
 
