@@ -22,6 +22,7 @@ namespace SigesivServer.Controllers
                 return View("MenuAjustadores", response);
             if (response.data.fkRol == 25)
             {
+
                 return View("MenuConductor", response);
             }
             return response;
