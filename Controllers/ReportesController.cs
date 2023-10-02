@@ -8,6 +8,7 @@ using SigesivServer.Models.ViewModels;
 using SigesivServer.utils;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System;
 
 namespace SigesivServer.Controllers
 {
@@ -20,13 +21,15 @@ namespace SigesivServer.Controllers
         public async Task<ActionResult<RespuestaReporteDeIncidente>> registrarReporte([FromForm]ViewModelReporteDeIncidenteCompletoCreate reporte)
         {
         
+            Console.WriteLine("Inicando");
             RespuestaReporteDeIncidente response = new RespuestaReporteDeIncidente();
-            //se crea objeto reporte a paertir de los datos del fomulario
+            //se crea objeto reporte a partir de los datos del fomulario
             ViewModelReporteDeIncidenteCreate reporteConFotos = new ViewModelReporteDeIncidenteCreate();
+            Console.WriteLine("Asigando fotos");
             reporteConFotos.id = reporte.id;
             reporteConFotos.fkAsegurado = reporte.fkAsegurado;
             reporteConFotos.fkVehiculoAsegurado = reporte.fkVehiculoAsegurado;
-            reporteConFotos.fkEstado = 13;
+            reporteConFotos.fkEstado = 1;
             reporteConFotos.latitud = reporte.latitud;
             reporteConFotos.longitud = reporte.longitud;
             reporteConFotos.urlImagen1 = reporte.urlImagen1;
@@ -40,7 +43,9 @@ namespace SigesivServer.Controllers
             ViewModelReporteDeIncidenteCompleto reporteCompletoBd = new ViewModelReporteDeIncidenteCompleto();
             // se crea objeto OtroInvolucrado  a partr de los datos del formulario
             OtroInvolucrado otroInvolucrado = null;
+            
             if (reporte.idOtroInvolucrado > 0) {
+                Console.WriteLine("Agregando otro involucrado");
                 otroInvolucrado = new OtroInvolucrado();
                 otroInvolucrado.id = reporte.idOtroInvolucrado;
                 otroInvolucrado.nombre = reporte.nombre;
@@ -49,6 +54,7 @@ namespace SigesivServer.Controllers
             // se crea un objeto de tro vehiculo involucradoa partir del formulario
             OtroVehiculoInvolucrado otroVehiculo = null;
             if (reporte.idOtroVehiculo > 0) {
+                Console.WriteLine("Agregando otro vehiculo");
                 otroVehiculo = new OtroVehiculoInvolucrado();
                 otroVehiculo.id = reporte.idOtroVehiculo;
                 otroVehiculo.fkOtroInvolucrado = (reporte.idOtroInvolucrado == 0)?null:otroInvolucrado.id;
@@ -61,14 +67,17 @@ namespace SigesivServer.Controllers
             
             ConvertidorDeReportes convertidor = new ConvertidorDeReportes();
             EscritorDeImagenes escritor = new EscritorDeImagenes();
+            Console.WriteLine("Guardando imagenes en list");
             List<string> urls = escritor.guadarImagenes(reporteConFotos);
+            Console.WriteLine("Convirtiendo reporte");
             ReporteDeIncidente reporteConUrls = convertidor.convertirAReporteConUrl(reporteConFotos,urls);
-            
             reporteCompletoBd.reporte = reporteConUrls;
-            
+            Console.WriteLine("Llamando a registro de reporte");
             var resultado = await reportesRepository.registrarReporteDeIncidente(reporteCompletoBd);
             response.data = resultado.Value;
-            return response;
+            
+            return Created("/algo",response);
+            
 
         }
         

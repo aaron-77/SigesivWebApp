@@ -22,29 +22,33 @@ namespace SigesivServer.Bd
             {
                 if (reporte.reporte != null && reporte.otrosInvolucrados != null && reporte.otroVehiculosInvolucrados != null)
                 {
+                    Console.WriteLine("completo");
                     reporteCreado = await crearReporteDeIncidenteCompleto(reporte);
                     return reporteCreado;
                 }
                 if (reporte.reporte != null && reporte.otrosInvolucrados != null && reporte.otroVehiculosInvolucrados == null)
                 {
-                    return reporteCreado = await crearReporteDeIncidenteSinOtrosVehiculos(reporte);
+                    Console.WriteLine("Sin vehiculos");
+                    reporteCreado = await crearReporteDeIncidenteSinOtrosVehiculos(reporte);
+                    return reporteCreado;
+                     
                 }
                 if (reporte.reporte != null && reporte.otrosInvolucrados == null && reporte.otroVehiculosInvolucrados != null)
                 {
+                    Console.WriteLine("Sin otros involucrados");
                     return reporteCreado = await crearReporteDeIncidenteSinOtrosInvolucrados(reporte);
                 }
                 if (reporte.reporte != null && reporte.otrosInvolucrados == null && reporte.otroVehiculosInvolucrados == null)
                 {
+                    Console.WriteLine("Base");
                     return reporteCreado = await crearReporteDeIncidenteBase(reporte);
                 }
 
             }
             catch (Exception ex)
             {
-
+                Console.WriteLine(ex);
             }
-
-
             return null;
         }
         private async Task<ActionResult<ViewModelReporteDeIncidentePreview>> crearReporteDeIncidenteCompleto(ViewModelReporteDeIncidenteCompleto reporte)
@@ -218,6 +222,7 @@ namespace SigesivServer.Bd
                         SqlParameter parametro1 = helper2.CreateParameter("@reporte", reportedt, SqlDbType.Structured);
                         comando.Parameters.Add(parametro1);
                         var reader = await comando.ExecuteReaderAsync();
+                        
                         while (reader.Read())
                         {
                             reporteCreado.id = (int)reader[0];
@@ -240,6 +245,7 @@ namespace SigesivServer.Bd
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
             }
             return null;
         }

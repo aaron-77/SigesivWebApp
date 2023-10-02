@@ -55,8 +55,17 @@ namespace SigesivServer.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=tcp:serveraseguradora.database.windows.net,1433;Initial Catalog=proyectoaseguradoraequipo5;Persist Security Info=False;User ID=aaron;Password=Mofos*.*;MultipleActiveResultSets=True;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+                try{
+                    #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                    
+                    optionsBuilder.UseSqlServer("workstation id=gsxinsurance.mssql.somee.com;packet size=4096;user id=aaron-77_SQLLogin_1;pwd=hardthsc51;data source=gsxinsurance.mssql.somee.com;persist security info=False;initial catalog=gsxinsurance;TrustServerCertificate=true");
+                    //optionsBuilder.UseSqlServer("server=DESKTOP-A2FGC3V\\SQLEXPRESS;database=proyectoaseguradoraequipo5;Integrated Security=True;Persist Security Info=False;MultipleActiveResultSets=True;Encrypt=No;TrustServerCertificate=False;Connection Timeout=30");
+                    //optionsBuilder.UseSqlServer("Server=localhost,1433;Initial Catalog=proyectoaseguradoraequipo5;Persist Security Info=False;MultipleActiveResultSets=True;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+
+                }catch(Exception ex){
+                    Console.WriteLine(ex);
+                }
+                //Server=tcp:serveraseguradora.database.windows.net,1433;Initial Catalog=proyectoaseguradoraequipo5;Persist Security Info=False;User ID=aaron;Password=Mofos*.*;MultipleActiveResultSets=True;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
 
             }
         }
@@ -947,6 +956,8 @@ namespace SigesivServer.Models
                 entity.Property(e => e.username)
                     .IsRequired()
                     .HasColumnName("username");
+
+                entity.Property(e => e.fkRol).HasColumnName("fkRol");
 
             });
 

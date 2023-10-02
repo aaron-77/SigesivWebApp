@@ -6,5 +6,6 @@
         public string nombreCompleto { get; set; }
         public int fkUsuario { get; set; }
         public string username { get; set; }
+        public int fkRol { get; set; }
     }
 }
