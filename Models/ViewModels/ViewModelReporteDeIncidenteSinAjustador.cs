@@ -9,8 +9,8 @@ namespace SigesivServer.Models.ViewModels
         public int fkAsegurado { get; set; }
         public int? fkVehiculoAsegurado { get; set; }
         public int? fkPersonal { get; set; }
-        public decimal latitud { get; set; }
-        public decimal longitud { get; set; }
+        public string latitud { get; set; }
+        public string longitud { get; set; }
         public string urlImagen1 { get; set; }
         public string urlImagen2 { get; set; }
         public string urlImagen3 { get; set; }

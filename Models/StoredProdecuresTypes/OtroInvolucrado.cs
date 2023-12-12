@@ -5,5 +5,6 @@
         public int id { get; set; }
         public int fkReporte { get; set; }
         public string nombre { get; set; }
+        public string licencia { get; set; }
     }
 }

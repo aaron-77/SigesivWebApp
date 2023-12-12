@@ -370,11 +370,11 @@ namespace SigesivServer.Models
                 entity.Property(e => e.FkVehiculoAsegurado).HasColumnName("fkVehiculoAsegurado");
 
                 entity.Property(e => e.Latitud)
-                    .HasColumnType("decimal(8, 6)")
+                    .HasColumnType("nvarchar(max)")
                     .HasColumnName("latitud");
 
                 entity.Property(e => e.Longitud)
-                    .HasColumnType("decimal(8, 6)")
+                    .HasColumnType("nvarchar(max)")
                     .HasColumnName("longitud");
 
                 entity.Property(e => e.UrlImagen1)
