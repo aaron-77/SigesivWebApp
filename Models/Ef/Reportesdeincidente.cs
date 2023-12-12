@@ -17,8 +17,8 @@ namespace SigesivServer.Models
         public int FkAsegurado { get; set; }
         public int FkVehiculoAsegurado { get; set; }
         public int FkPersonal { get; set; }
-        public decimal Latitud { get; set; }
-        public decimal Longitud { get; set; }
+        public string Latitud { get; set; }
+        public string Longitud { get; set; }
         public string UrlImagen1 { get; set; }
         public string UrlImagen2 { get; set; }
         public string UrlImagen3 { get; set; }

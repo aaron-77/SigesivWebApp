@@ -8,6 +8,8 @@ using SigesivServer.Models.ViewModels;
 using SigesivServer.utils;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System;
+using Microsoft.IdentityModel.Tokens;
 
 namespace SigesivServer.Controllers
 {
@@ -17,61 +19,46 @@ namespace SigesivServer.Controllers
     {
         private static ReportesRepository reportesRepository = new ReportesRepository();
         [HttpPost("crearReporte")]
-        public async Task<ActionResult<RespuestaReporteDeIncidente>> registrarReporte([FromForm]ViewModelReporteDeIncidenteCompletoCreate reporte)
+        public async Task<ActionResult<RespuestaReporteDeIncidente>> registrarReporte([FromForm] ViewModelReporteDeIncidenteCompletoCreate reporte)
         {
-        
+            Console.WriteLine("Inicando");
             RespuestaReporteDeIncidente response = new RespuestaReporteDeIncidente();
-            //se crea objeto reporte a paertir de los datos del fomulario
+            //se crea objeto reporte a partir de los datos del fomulario
             ViewModelReporteDeIncidenteCreate reporteConFotos = new ViewModelReporteDeIncidenteCreate();
+            Console.WriteLine("Asigando fotos");
             reporteConFotos.id = reporte.id;
             reporteConFotos.fkAsegurado = reporte.fkAsegurado;
             reporteConFotos.fkVehiculoAsegurado = reporte.fkVehiculoAsegurado;
-            reporteConFotos.fkEstado = 13;
+            reporteConFotos.fkEstado = 1;
             reporteConFotos.latitud = reporte.latitud;
             reporteConFotos.longitud = reporte.longitud;
-            reporteConFotos.urlImagen1 = reporte.urlImagen1;
-            reporteConFotos.urlImagen2 = reporte.urlImagen2;
-            reporteConFotos.urlImagen3 = reporte.urlImagen3;
-            reporteConFotos.urlImagen4 = reporte.urlImagen4;
-            reporteConFotos.urlImagen5 = reporte.urlImagen5;
-            reporteConFotos.urlImagen6 = reporte.urlImagen6;
-            reporteConFotos.urlImagen7 = reporte.urlImagen7;
-            reporteConFotos.urlImagen8 = reporte.urlImagen8;
+            reporteConFotos.urlImagenes = reporte.urlImagenes;
             ViewModelReporteDeIncidenteCompleto reporteCompletoBd = new ViewModelReporteDeIncidenteCompleto();
             // se crea objeto OtroInvolucrado  a partr de los datos del formulario
             OtroInvolucrado otroInvolucrado = null;
-            if (reporte.idOtroInvolucrado > 0) {
-                otroInvolucrado = new OtroInvolucrado();
-                otroInvolucrado.id = reporte.idOtroInvolucrado;
-                otroInvolucrado.nombre = reporte.nombre;
-                reporteCompletoBd.otrosInvolucrados = new List<OtroInvolucrado> { otroInvolucrado };
+            GestorDeDatosDeOtrosInvolucrados gestor = new GestorDeDatosDeOtrosInvolucrados();
+            if (!reporte.otroInvolucrado1Nombre.IsNullOrEmpty() )
+            {
+                reporteCompletoBd.otrosInvolucrados = gestor.extraerOtrosInvolucradosDeFormulario(reporte);
             }
             // se crea un objeto de tro vehiculo involucradoa partir del formulario
-            OtroVehiculoInvolucrado otroVehiculo = null;
-            if (reporte.idOtroVehiculo > 0) {
-                otroVehiculo = new OtroVehiculoInvolucrado();
-                otroVehiculo.id = reporte.idOtroVehiculo;
-                otroVehiculo.fkOtroInvolucrado = (reporte.idOtroInvolucrado == 0)?null:otroInvolucrado.id;
-                otroVehiculo.fkmarca = reporte.fkmarca;
-                otroVehiculo.fkmodelo = reporte.fkmodelo;
-                otroVehiculo.color = reporte.color;
-                otroVehiculo.numeroDePlaca = reporte.numeroDePlaca;
-                reporteCompletoBd.otroVehiculosInvolucrados = new List<OtroVehiculoInvolucrado>() { otroVehiculo };
+            if (reporte.idOtroVehiculo1 > 0)
+            {
+                reporteCompletoBd.otroVehiculosInvolucrados = gestor.extraerOtrosVehiculosInvolucrados(reporte);
             }
-            
             ConvertidorDeReportes convertidor = new ConvertidorDeReportes();
             EscritorDeImagenes escritor = new EscritorDeImagenes();
+            Console.WriteLine("Guardando imagenes en list");
             List<string> urls = escritor.guadarImagenes(reporteConFotos);
-            ReporteDeIncidente reporteConUrls = convertidor.convertirAReporteConUrl(reporteConFotos,urls);
-            
+            Console.WriteLine("Convirtiendo reporte");
+            ReporteDeIncidente reporteConUrls = convertidor.convertirAReporteConUrl(reporteConFotos, urls);
             reporteCompletoBd.reporte = reporteConUrls;
-            
+            Console.WriteLine("Llamando a registro de reporte");
             var resultado = await reportesRepository.registrarReporteDeIncidente(reporteCompletoBd);
             response.data = resultado.Value;
-            return response;
-
+            return Created("/algo", response);
         }
-        
+
         [HttpGet("CrearReporte")]
         public async Task<ActionResult<RespuestaReporteDeIncidente>> RegistrarReporte([FromForm] ViewModelReporteDeIncidenteCompletoCreate reporte)
         {
@@ -91,7 +78,7 @@ namespace SigesivServer.Controllers
             return View("ReporteDetalle");
 
         }
-  
+
         [HttpPut("asignarReporte")]
         public async Task<ActionResult<RespuestaAsignacion>> asignarReporteDeIncidente([FromBody] int idreporte, int idajustador)
         {

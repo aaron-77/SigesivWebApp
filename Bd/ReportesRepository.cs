@@ -22,29 +22,33 @@ namespace SigesivServer.Bd
             {
                 if (reporte.reporte != null && reporte.otrosInvolucrados != null && reporte.otroVehiculosInvolucrados != null)
                 {
+                    Console.WriteLine("completo");
                     reporteCreado = await crearReporteDeIncidenteCompleto(reporte);
                     return reporteCreado;
                 }
                 if (reporte.reporte != null && reporte.otrosInvolucrados != null && reporte.otroVehiculosInvolucrados == null)
                 {
-                    return reporteCreado = await crearReporteDeIncidenteSinOtrosVehiculos(reporte);
+                    Console.WriteLine("Sin vehiculos");
+                    reporteCreado = await crearReporteDeIncidenteSinOtrosVehiculos(reporte);
+                    return reporteCreado;
+
                 }
                 if (reporte.reporte != null && reporte.otrosInvolucrados == null && reporte.otroVehiculosInvolucrados != null)
                 {
+                    Console.WriteLine("Sin otros involucrados");
                     return reporteCreado = await crearReporteDeIncidenteSinOtrosInvolucrados(reporte);
                 }
                 if (reporte.reporte != null && reporte.otrosInvolucrados == null && reporte.otroVehiculosInvolucrados == null)
                 {
+                    Console.WriteLine("Base");
                     return reporteCreado = await crearReporteDeIncidenteBase(reporte);
                 }
 
             }
             catch (Exception ex)
             {
-
+                Console.WriteLine(ex);
             }
-
-
             return null;
         }
         private async Task<ActionResult<ViewModelReporteDeIncidentePreview>> crearReporteDeIncidenteCompleto(ViewModelReporteDeIncidenteCompleto reporte)
@@ -74,30 +78,46 @@ namespace SigesivServer.Bd
                         comando.Parameters.Add(parametro3);
 
                         var reader = await comando.ExecuteReaderAsync();
+
                         while (reader.Read())
                         {
-                            reporteCreado.id = (int)reader[0];
-                            reporteCreado.nombreCompleto = (string)reader[1];
-                            reporteCreado.modelo = (string)reader[2];
-                            reporteCreado.marca = (string)reader[3];
-                            reporteCreado.color = (string)reader[4];
-                            reporteCreado.url1 = (string)reader[5];
-                            reporteCreado.url2 = (string)reader[6];
-                            reporteCreado.url3 = (string)reader[7];
-                            reporteCreado.url4 = (string)reader[8];
-                            reporteCreado.url5 = reader[9] == DBNull.Value ? "" : (string)reader[9];
-                            reporteCreado.url6 = reader[10] == DBNull.Value ? "" : (string)reader[10];
-                            reporteCreado.url7 = reader[11] == DBNull.Value ? "" : (string)reader[11];
-                            reporteCreado.url8 = reader[12] == DBNull.Value ? "" : (string)reader[12];
+                            
+                            if (reader[0] != null && !reader[0].ToString().Equals("linea"))
+                            {
+                                reporteCreado.id = (int)reader[0];
+                                reporteCreado.nombreCompleto = (string)reader[1];
+                                reporteCreado.modelo = (string)reader[2];
+                                reporteCreado.marca = (string)reader[3];
+                                reporteCreado.color = (string)reader[4];
+                                reporteCreado.url1 = (string)reader[5];
+                                reporteCreado.url2 = (string)reader[6];
+                                reporteCreado.url3 = (string)reader[7];
+                                reporteCreado.url4 = (string)reader[8];
+                                reporteCreado.url5 = reader[9] == DBNull.Value ? "" : (string)reader[9];
+                                reporteCreado.url6 = reader[10] == DBNull.Value ? "" : (string)reader[10];
+                                reporteCreado.url7 = reader[11] == DBNull.Value ? "" : (string)reader[11];
+                                reporteCreado.url8 = reader[12] == DBNull.Value ? "" : (string)reader[12];
+
+                                                            }
+                            else
+                            {
+                                Console.WriteLine(reader["linea"].ToString());
+                                Console.WriteLine(reader["error"].ToString());
+                            }
+
+                            return reporteCreado;
+
                         }
-
-                        return reporteCreado;
-
                     }
                 }
             }
+            catch (IndexOutOfRangeException exRange)
+            {
+                Console.WriteLine(exRange);
+            }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
             }
             return null;
         }
@@ -218,6 +238,7 @@ namespace SigesivServer.Bd
                         SqlParameter parametro1 = helper2.CreateParameter("@reporte", reportedt, SqlDbType.Structured);
                         comando.Parameters.Add(parametro1);
                         var reader = await comando.ExecuteReaderAsync();
+
                         while (reader.Read())
                         {
                             reporteCreado.id = (int)reader[0];
@@ -240,13 +261,14 @@ namespace SigesivServer.Bd
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
             }
             return null;
         }
 
         public async Task<ActionResult<int>> asignarReporteDeIncidente(int idreporte, int idajustador)
         {
-            
+
             try
             {
                 var resultado = await conexion.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_asignarReporteDeIncidente @reporte={idreporte},@personal={idajustador}");
