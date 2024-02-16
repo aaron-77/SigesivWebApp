@@ -42,7 +42,7 @@ namespace SigesivServer.Controllers
                 reporteCompletoBd.otrosInvolucrados = gestor.extraerOtrosInvolucradosDeFormulario(reporte);
             }
             // se crea un objeto de tro vehiculo involucradoa partir del formulario
-            if (reporte.idOtroVehiculo1 > 0)
+            if (reporte.otroVehiculo1Id > 0)
             {
                 reporteCompletoBd.otroVehiculosInvolucrados = gestor.extraerOtrosVehiculosInvolucrados(reporte);
             }
