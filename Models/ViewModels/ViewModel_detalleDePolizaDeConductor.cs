@@ -23,6 +23,7 @@ namespace SigesivServer.Models
         public DateTime fechaDeExpiracion { get; set; }
         public string tipoDeCobertura { get; set; }
         public int lapsoDeCobertura { get; set; }
+        public int idVehiculo {get;set;}
         public string marca { get; set; }
         public string modelo { get; set; }
         public string numeroDePlacas { get; set; }

@@ -1,4 +1,4 @@
-﻿using SigesivServer.Models.ViewModels;
+using SigesivServer.Models.ViewModels;
 using System.Collections.Generic;
 
 namespace SigesivServer.Models.Respuestas
