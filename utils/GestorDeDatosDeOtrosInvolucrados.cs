@@ -1,10 +1,7 @@
 using System.Reflection;
-using System.Resources;
-using Microsoft.IdentityModel.Tokens;
-using SigesivServer.Models;
 using SigesivServer.Models.ViewModels;
 using SigesivServer.Models.StoredProdecuresTypes;
-using WebGrease.Css.Extensions;
+
 
 class GestorDeDatosDeOtrosInvolucrados
 {
@@ -83,35 +80,6 @@ class GestorDeDatosDeOtrosInvolucrados
             otrosVehiculosInvolucrados.Add(otroVehiculoInvlucradoNew);
             otroVehiculoInvlucradoNew = new OtroVehiculoInvolucrado();
         }
-
-        /* int contadorPropsOtrosVehiculosAgregados = 0;
-        foreach (var property in properties)
-        {
-            contadorPropsOtrosVehiculosAgregados++;
-            var valor = property.GetValue(reporte);
-            foreach (var prop in otroVehiculoInvlucradoNew.GetType().GetProperties())
-            {
-                if (property.Name.ToLower().Contains(prop.Name.ToLower()))
-                {
-                    Type tipoDeDato = prop.PropertyType;
-                    TypeCode codigoTipo = Type.GetTypeCode(tipoDeDato);
-                    switch (codigoTipo)
-                    {
-                        case TypeCode.Int32:
-                            prop.SetValue(otroVehiculoInvlucradoNew, (int)valor); // Copia el valor de la propiedad actual al nuevo objeto    
-                            break;
-                        case TypeCode.String:
-                            prop.SetValue(otroVehiculoInvlucradoNew, (string)valor); // Copia el valor de la propiedad actual al nuevo objeto    
-                            break;
-                    }
-                }
-            }
-            if (contadorPropsOtrosVehiculosAgregados % 5 == 0)
-            {
-                otrosVehiculosInvolucrados.Add(otroVehiculoInvlucradoNew);
-                otroVehiculoInvlucradoNew = new OtroVehiculoInvolucrado();
-            }
-        } */
         return otrosVehiculosInvolucrados;
     }
 
