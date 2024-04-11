@@ -18,5 +18,6 @@
         public string urlImagen8 { get; set; }
         public int fkEstado { get; set; }
         public string fechaDelReporte { get; set; }
+        public string direccion {get;set;}
     }
 }
