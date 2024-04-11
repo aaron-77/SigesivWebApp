@@ -3,6 +3,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using SigesivServer.Models;
 using SigesivServer.Models.Ef;
+using SigesivServer.Models.Respuestas;
 using SigesivServer.Models.StoredProdecuresTypes;
 using SigesivServer.Models.ViewModels;
 using SigesivServer.utils;
@@ -13,8 +14,12 @@ using System.Threading.Tasks;
 
 namespace SigesivServer.Bd
 {
-    public class ReportesRepository : ConexionBD
+    public class ReportesRepository
     {
+        private proyectoaseguradoraequipo5Context conexion;
+        public ReportesRepository(){
+            conexion = new proyectoaseguradoraequipo5Context();
+        }
         public async Task<ActionResult<ViewModelReporteDeIncidentePreview>> registrarReporteDeIncidente(ViewModelReporteDeIncidenteCompleto reporte)
         {
             ActionResult<ViewModelReporteDeIncidentePreview> reporteCreado;
@@ -268,45 +273,34 @@ namespace SigesivServer.Bd
 
         public async Task<ActionResult<int>> asignarReporteDeIncidente(int idreporte, int idajustador)
         {
-
             try
             {
-                var resultado = await conexion.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_asignarReporteDeIncidente @reporte={idreporte},@personal={idajustador}");
+                var resultado = await conexion.Database.ExecuteSqlInterpolatedAsync($@"EXEC sp_asignarReporte @reporte={idreporte},@personal={idajustador}");
                 return resultado;
             }
             catch (Exception ex)
             {
 
             }
-
             return null;
-
         }
 
-        public async Task<ActionResult<List<ViewModelReporteDeIncidenteSinAjustador>>> consultarReportesSinAjustador()
+        public async Task<ActionResult<RespuestaTodosLosReportesSinAsignar>> consultarReportesSinAjustador()
         {
-
-            try
-            {
-                List<ViewModelReporteDeIncidenteSinAjustador> reportesSinAjustador = new List<ViewModelReporteDeIncidenteSinAjustador>();
-                var reporteSinAjustador = conexion.reporteSinAjustador.FromSqlInterpolated($@"EXEC sp_obtenerTodosLosReportesSinAjustador").AsAsyncEnumerable();
-
-                await foreach (var reporte in reporteSinAjustador)
+               RespuestaTodosLosReportesSinAsignar respuesta = new RespuestaTodosLosReportesSinAsignar();
+                try
                 {
-                    reportesSinAjustador.Add(reporte);
+                    var reporteSinAjustador = await conexion.reporteSinAjustador.FromSqlInterpolated($@"EXEC sp_obtenerTodosLosReportesSinAjustador").ToListAsync();   
+                    respuesta.data = reporteSinAjustador;
+                    respuesta.mensaje = "Consulta exitosa";
                 }
-                return reportesSinAjustador;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-
-            }
-            return null;
-
+                catch (Exception ex)
+                {
+                    respuesta.errores.Add(ex.Message+" "+ex.StackTrace);
+                    respuesta.data = null;
+                }
+                return respuesta;
         }
-
-
     }
 }
 

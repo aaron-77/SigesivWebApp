@@ -12,6 +12,7 @@ namespace SigesivServer.Models.ViewModels
         public int? fkPersonal { get; set; }
         public string latitud { get; set; }
         public string longitud { get; set; }
+        public string direccion {get;set;}
         public List<IFormFile> urlImagenes { get; set; }
 
         public int fkEstado { get; set; }

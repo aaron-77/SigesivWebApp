@@ -16,8 +16,11 @@ namespace SigesivServer.Controllers
     [Route("[controller]")]
     [ApiController]
     public class ReportesController : Controller
-    {
-        private static ReportesRepository reportesRepository = new ReportesRepository();
+    {  
+        private ReportesRepository reportesRepository;
+        public ReportesController (){
+            reportesRepository = new ReportesRepository();
+        }
         [HttpPost("crearReporte")]
         public async Task<ActionResult<RespuestaReporteDeIncidente>> registrarReporte([FromForm] ViewModelReporteDeIncidenteCompletoCreate reporte)
         {
@@ -92,11 +95,13 @@ namespace SigesivServer.Controllers
         [HttpGet("obtenerReportesSinAsignar")]
         public async Task<ActionResult<RespuestaTodosLosReportesSinAsignar>> consultarReportesSinAjustador()
         {
-
-            RespuestaTodosLosReportesSinAsignar response = new RespuestaTodosLosReportesSinAsignar();
+            
             var resultado = await reportesRepository.consultarReportesSinAjustador();
-            response.data = resultado.Value;
-            return response;
+            if(resultado.Value.data == null){
+                resultado.Value.status = 0;
+            }
+            resultado.Value.status = 1;
+            return resultado;
 
         }
 

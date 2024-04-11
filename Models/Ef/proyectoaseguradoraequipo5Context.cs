@@ -50,20 +50,23 @@ namespace SigesivServer.Models
         public virtual DbSet<ViewModelPersonalAjustadores> personalAjustador { get; set; }
         public virtual DbSet<ViewModelUsuarioRegistrado> usuarioRegistrado { get; set; }
         public virtual DbSet<ViewModelAseguradoConUsername> aseguradoConUsername { get; set; }
-
+        public virtual DbSet<PersonalDTO> catalogoPersonal { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-                try{
-                    #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                try
+                {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                     //workstation id=gsxinsurance.mssql.somee.com;packet size=4096;user id=aaron-77_SQLLogin_1;pwd=hardthsc51;data source=gsxinsurance.mssql.somee.com;persist security info=False;initial catalog=gsxinsurance
                     optionsBuilder.UseSqlServer("workstation id=gsxinsurance.mssql.somee.com;packet size=4096;user id=aaron-77_SQLLogin_1;pwd=hardthsc51;data source=gsxinsurance.mssql.somee.com;persist security info=False;initial catalog=gsxinsurance;TrustServerCertificate=true");
                     //optionsBuilder.UseSqlServer("workstation id=gsxinsurance.mssql.somee.com;packet size=4096;user id=aaron-77_SQLLogin_1;pwd=hardthsc51;data source=gsxinsurance.mssql.somee.com;persist security info=False;initial catalog=gsxinsurance;TrustServerCertificate=true");
                     //optionsBuilder.UseSqlServer("server=DESKTOP-A2FGC3V\\SQLEXPRESS;database=proyectoaseguradoraequipo5;Integrated Security=True;Persist Security Info=False;MultipleActiveResultSets=True;Encrypt=No;TrustServerCertificate=False;Connection Timeout=30");
                     //optionsBuilder.UseSqlServer("Server=localhost,1433;Initial Catalog=proyectoaseguradoraequipo5;Persist Security Info=False;MultipleActiveResultSets=True;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
 
-                }catch(Exception ex){
+                }
+                catch (Exception ex)
+                {
                     Console.WriteLine(ex);
                 }
                 //Server=tcp:serveraseguradora.database.windows.net,1433;Initial Catalog=proyectoaseguradoraequipo5;Persist Security Info=False;User ID=aaron;Password=Mofos*.*;MultipleActiveResultSets=True;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
@@ -257,15 +260,18 @@ namespace SigesivServer.Models
                     .HasConstraintName("FK_Pagos_Asegurados");
             });
 
+
             modelBuilder.Entity<Personal>(entity =>
             {
                 entity.ToTable("personal");
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
+
                 entity.Property(e => e.FechaDeIngreso)
                     .HasColumnType("date")
                     .HasColumnName("fechaDeIngreso");
+
 
                 entity.Property(e => e.FkRol).HasColumnName("fkRol");
 
@@ -274,6 +280,7 @@ namespace SigesivServer.Models
                 entity.Property(e => e.NombreCompleto)
                     .IsRequired()
                     .HasColumnName("nombreCompleto");
+
 
                 entity.HasOne(d => d.FkRolNavigation)
                     .WithMany(p => p.Personals)
@@ -287,6 +294,7 @@ namespace SigesivServer.Models
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_personal_usuarios");
             });
+
 
             modelBuilder.Entity<Polizasdeseguro>(entity =>
             {
@@ -413,6 +421,10 @@ namespace SigesivServer.Models
                 entity.Property(e => e.UrlImagen8)
                     .HasColumnType("text")
                     .HasColumnName("urlImagen8");
+
+                entity.Property(e => e.Direccion)
+                .HasColumnType("text").
+                HasColumnName("direccion");
 
                 entity.HasOne(d => d.FkAseguradoNavigation)
                     .WithMany(p => p.Reportesdeincidentes)
@@ -810,7 +822,7 @@ namespace SigesivServer.Models
 
                 entity.Property(e => e.fkReporte)
                     .HasColumnName("fkReporte");
-   
+
             });
 
             modelBuilder.Entity<Models.StoredProdecuresTypes.OtroVehiculoInvolucrado>(entity =>
@@ -869,7 +881,7 @@ namespace SigesivServer.Models
 
                 entity.Property(e => e.costo)
                     .HasColumnName("costo");
-               
+
             });
 
             modelBuilder.Entity<Models.ViewModels.ViewModelReporteDeIncidenteSinAjustador>(entity =>
@@ -907,9 +919,11 @@ namespace SigesivServer.Models
                 entity.Property(e => e.fkEstado).HasColumnName("fkEstado");
 
                 entity.Property(e => e.fechaDelReporte).HasColumnName("fechaDelReporte");
+                entity.Property(e=> e.direccion).HasColumnName("direccion")
             });
 
-            modelBuilder.Entity< Models.ViewModels.ViewModelPersonalAjustadores> (entity =>
+
+            modelBuilder.Entity<Models.ViewModels.ViewModelPersonalAjustadores>(entity =>
             {
                 entity.HasNoKey();
 
@@ -962,6 +976,13 @@ namespace SigesivServer.Models
 
             });
 
+            modelBuilder.Entity<PersonalDTO>(entity =>
+            {
+                entity.HasNoKey();
+                entity.Property(e => e.id).HasColumnName("id");
+
+                entity.Property(e => e.nombreCompleto).HasColumnName("nombreCompleto");
+            });
 
             OnModelCreatingPartial(modelBuilder);
         }

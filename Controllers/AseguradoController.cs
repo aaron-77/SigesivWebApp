@@ -8,7 +8,7 @@ namespace SigesivServer.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class AseguradoController : Controller
+    public class UnController : Controller
     {
         private static AseguradoRepository aseguradoRepository = new AseguradoRepository();
 

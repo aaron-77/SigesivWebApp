@@ -29,7 +29,7 @@ namespace SigesivServer.Models
         public string UrlImagen8 { get; set; }
         public int FkEstado { get; set; }
         public DateTime FechaDelReporte { get; set; }
-
+        public string Direccion {get;set;}
         public virtual Asegurado FkAseguradoNavigation { get; set; }
         public virtual Estadosreporte FkEstadoNavigation { get; set; }
         public virtual Personal FkPersonalNavigation { get; set; }

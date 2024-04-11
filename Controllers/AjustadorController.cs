@@ -7,7 +7,7 @@ namespace SigesivServer.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class AjustadorController : Controller
+    public class EjecutivoController : Controller
     {
         [HttpGet("MenuAjustadores")]
         public async Task<ActionResult<ViewModelPersonalAjustadores>> mostarPantalla(RespuestaObtenerTodosLosAjustadores ajustadores)
