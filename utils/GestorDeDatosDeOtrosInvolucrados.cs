@@ -48,7 +48,7 @@ class GestorDeDatosDeOtrosInvolucrados
         //int[] cantidadOtrosInvolucradosYVehiculos = determinarNumDeOtrosInvolucrados(reporte);
         List<OtroVehiculoInvolucrado> otrosVehiculosInvolucrados = new List<OtroVehiculoInvolucrado>();
         /*
-        * se obtienen todas propiedades que contienen los datos de los otros involucrados considerando 2 condiciones
+        * se obtienen todas propiedades que contienen los datos de los otros vehiculos involucrados considerando 2 condiciones
         *1.- Que la propiedad id tenga valor mayor a 0
         * 2.- que la propiead nombre no sea null ni este vacia    
         */

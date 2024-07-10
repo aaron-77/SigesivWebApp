@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using SigesivServer.Models.StoredProdecuresTypes;
 using SigesivServer.Models.ViewModels;
-
+using Newtonsoft.Json;
 #nullable disable
 
 namespace SigesivServer.Models
@@ -51,6 +51,9 @@ namespace SigesivServer.Models
         public virtual DbSet<ViewModelUsuarioRegistrado> usuarioRegistrado { get; set; }
         public virtual DbSet<ViewModelAseguradoConUsername> aseguradoConUsername { get; set; }
         public virtual DbSet<PersonalDTO> catalogoPersonal { get; set; }
+        public virtual DbSet<ViewModelDetalleReporteDeIncidente> detalleDeReporteDeIncidente {get;set;}
+        public virtual DbSet<ViewModelCasoDeCobertura> casoDeCoberturaView {get;set;}
+        public virtual DbSet<ViewModelOtroInvolucrado> otroInvolucradoView {get;set;}
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -919,7 +922,7 @@ namespace SigesivServer.Models
                 entity.Property(e => e.fkEstado).HasColumnName("fkEstado");
 
                 entity.Property(e => e.fechaDelReporte).HasColumnName("fechaDelReporte");
-                entity.Property(e=> e.direccion).HasColumnName("direccion")
+                entity.Property(e=> e.direccion).HasColumnName("direccion");
             });
 
 
@@ -976,6 +979,13 @@ namespace SigesivServer.Models
 
             });
 
+            modelBuilder.Entity<Models.ViewModels.ViewModelCasoDeCobertura>(entity =>{
+                    entity.HasNoKey();
+                    entity.Property(e => e.nombreDelCaso).HasColumnName("nombreDelCaso");
+                    entity.Property(e => e.condiciones).HasColumnName("condiciones");
+
+            });
+            
             modelBuilder.Entity<PersonalDTO>(entity =>
             {
                 entity.HasNoKey();
@@ -984,6 +994,66 @@ namespace SigesivServer.Models
                 entity.Property(e => e.nombreCompleto).HasColumnName("nombreCompleto");
             });
 
+            modelBuilder.Entity<Models.ViewModels.ViewModelCasoDeCobertura>(entity =>{
+                    entity.HasNoKey();
+                    entity.Property(e => e.nombreDelCaso).HasColumnName("nombreDelCaso");
+                    entity.Property(e => e.condiciones).HasColumnName("condiciones");
+
+            });
+
+            modelBuilder.Entity<Models.ViewModels.ViewModelOtroInvolucrado>(entity =>{
+                    entity.HasNoKey();
+                    entity.Property(e => e.nombre).HasColumnName("nombre");
+                    entity.Property(e => e.licencia).HasColumnName("licencia");
+
+            });
+
+            modelBuilder.Entity<Models.ViewModels.ViewModelDetalleReporteDeIncidente>(entity =>{
+
+            entity.HasNoKey(); // No tiene clave principal es el resultado de una consulta
+            // Mapeo de propiedades
+            entity.Property(e => e.id).HasColumnName("id");
+            entity.Property(e => e.fkAsegurado).HasColumnName("fkAsegurado");
+            entity.Property(e => e.fkVehiculoAsegurado).HasColumnName("fkVehiculoAsegurado");
+            entity.Property(e => e.latitud).HasColumnName("latitud");
+            entity.Property(e => e.longitud).HasColumnName("longitud");
+            entity.Property(e => e.fechaDelReporte).HasColumnName("fechaDelReporte");
+            entity.Property(e => e.direccion).HasColumnName("direccion");
+            entity.Property(e => e.fkPersonal).HasColumnName("fkPersonal");
+            entity.Property(e => e.fkEstado).HasColumnName("fkEstado");
+            entity.Property(e => e.nombreCompleto).HasColumnName("nombreCompleto");
+            entity.Property(e => e.numeroDeLicencia).HasColumnName("numeroDeLicencia");
+            entity.Property(e => e.numeroDePlacas).HasColumnName("numeroDePlacas");
+            entity.Property(e => e.marca).HasColumnName("marca");
+            entity.Property(e => e.modelo).HasColumnName("modelo");
+            entity.Property(e => e.color).HasColumnName("color");
+            entity.Property(e => e.nombreAjustador).HasColumnName("nombreAjustador");
+            entity.Property(e => e.urlImagen1).HasColumnName("urlImagen1");
+            entity.Property(e => e.urlImagen2).HasColumnName("urlImagen2");
+            entity.Property(e => e.urlImagen3).HasColumnName("urlImagen3");
+            entity.Property(e => e.urlImagen4).HasColumnName("urlImagen4");
+            entity.Property(e => e.urlImagen5).HasColumnName("urlImagen5");
+            entity.Property(e => e.urlImagen6).HasColumnName("urlImagen6");
+            entity.Property(e => e.urlImagen7).HasColumnName("urlImagen7");
+            entity.Property(e => e.urlImagen8).HasColumnName("urlImagen8");
+            entity.Property(e => e.tipoDeCobertura).HasColumnName("tipoDeCobertura");
+
+            // Mapeo de propiedades JSON
+            entity.Property(e => e.nombreDelCaso)
+                .HasColumnName("nombreDelCaso")
+                .HasConversion(
+                    v => JsonConvert.SerializeObject(v),
+                    v => JsonConvert.DeserializeObject<List<ViewModelCasoDeCobertura>>(v)
+                );
+
+            entity.Property(e => e.otrosInvolucrados)
+                .HasColumnName("otrosi")
+                .HasConversion(
+                    v => JsonConvert.SerializeObject(v),
+                    v => JsonConvert.DeserializeObject<List<ViewModelOtroInvolucrado>>(v)
+                );
+
+            });
             OnModelCreatingPartial(modelBuilder);
         }
 

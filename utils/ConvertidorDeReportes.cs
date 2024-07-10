@@ -13,6 +13,7 @@ namespace SigesivServer.utils
             reporteConUrl.fkEstado = reporteConFotos.fkEstado;
             reporteConUrl.latitud = reporteConFotos.latitud;
             reporteConUrl.longitud = reporteConFotos.longitud;
+            reporteConUrl.direccion = reporteConFotos.direccion;
             reporteConUrl.urlImagen1 = urls[0];
             reporteConUrl.urlImagen2 = urls[1];
             reporteConUrl.urlImagen3 = urls[2];

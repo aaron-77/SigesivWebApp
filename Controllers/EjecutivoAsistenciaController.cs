@@ -24,6 +24,8 @@ namespace SigesivServer.Controllers
         [HttpGet("obtenerAjustadores")]
         public async Task<ActionResult<RespuesListadoAjustadores>> ObtenerAjustadores(){
             var result = await ejecutivoRepository.ConsultarAjustadores();
+            result.Value.status = 1;
+            result.Value.mensaje = "Consulta exitosa";
             if(result.Value.data == null){
                 result.Value.mensaje = "Error al cargar los ajustadores";
                 result.Value.status = 0;

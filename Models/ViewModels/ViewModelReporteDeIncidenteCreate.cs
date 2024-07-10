@@ -12,6 +12,8 @@ namespace SigesivServer.Models.ViewModels
         public string longitud { get; set; }
         public List<IFormFile> urlImagenes { get; set; }
         public int fkEstado { get; set; }
+        public string direccion { get; set;}
+
         public string fechaDelReporte { get; set; }
     }
 }

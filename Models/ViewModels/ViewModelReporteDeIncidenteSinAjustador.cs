@@ -21,6 +21,6 @@ namespace SigesivServer.Models.ViewModels
         public string? urlImagen8 { get; set; }
         public int fkEstado { get; set; }       
         public DateTime fechaDelReporte { get; set; }
-        public string direccion {get;set;}
+        public string? direccion {get;set;}
     }
 }

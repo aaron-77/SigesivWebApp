@@ -17,7 +17,8 @@ namespace SigesivServer.Bd
     public class ReportesRepository
     {
         private proyectoaseguradoraequipo5Context conexion;
-        public ReportesRepository(){
+        public ReportesRepository()
+        {
             conexion = new proyectoaseguradoraequipo5Context();
         }
         public async Task<ActionResult<ViewModelReporteDeIncidentePreview>> registrarReporteDeIncidente(ViewModelReporteDeIncidenteCompleto reporte)
@@ -33,7 +34,7 @@ namespace SigesivServer.Bd
                 }
                 if (reporte.reporte != null && reporte.otrosInvolucrados != null && reporte.otroVehiculosInvolucrados == null)
                 {
-                    Console.WriteLine("Sin vehiculos");
+
                     reporteCreado = await crearReporteDeIncidenteSinOtrosVehiculos(reporte);
                     return reporteCreado;
 
@@ -86,7 +87,7 @@ namespace SigesivServer.Bd
 
                         while (reader.Read())
                         {
-                            
+
                             if (reader[0] != null && !reader[0].ToString().Equals("linea"))
                             {
                                 reporteCreado.id = (int)reader[0];
@@ -103,7 +104,7 @@ namespace SigesivServer.Bd
                                 reporteCreado.url7 = reader[11] == DBNull.Value ? "" : (string)reader[11];
                                 reporteCreado.url8 = reader[12] == DBNull.Value ? "" : (string)reader[12];
 
-                                                            }
+                            }
                             else
                             {
                                 Console.WriteLine(reader["linea"].ToString());
@@ -285,22 +286,63 @@ namespace SigesivServer.Bd
             return null;
         }
 
-        public async Task<ActionResult<RespuestaTodosLosReportesSinAsignar>> consultarReportesSinAjustador()
+        public async Task<ActionResult<RespuestaTodosLosReportesSinAsignar>> consultarReportesSinAjustador(int skippedPages, int pageSize)
         {
-               RespuestaTodosLosReportesSinAsignar respuesta = new RespuestaTodosLosReportesSinAsignar();
-                try
+            RespuestaTodosLosReportesSinAsignar respuesta = new RespuestaTodosLosReportesSinAsignar();
+            try
+            {
+
+                var reporteSinAjustador = 
+                 conexion.detalleDeReporteDeIncidente
+                .FromSqlInterpolated($@"EXEC sp_obtenerTodosLosReportesSinAjustador @offset = {skippedPages},@next={pageSize} ")
+                .AsAsyncEnumerable<ViewModelDetalleReporteDeIncidente>();
+                ConvertidorEnumerableDetalleReporteAListaDeatalleReporte convertidor = new ConvertidorEnumerableDetalleReporteAListaDeatalleReporte();
+                respuesta.data = convertidor.enumarableToList(reporteSinAjustador.);
+                
+                /* reporteSinAjustador.Select(r => new ViewModelDetalleReporteDeIncidente
                 {
-                    var reporteSinAjustador = await conexion.reporteSinAjustador.FromSqlInterpolated($@"EXEC sp_obtenerTodosLosReportesSinAjustador").ToListAsync();   
-                    respuesta.data = reporteSinAjustador;
-                    respuesta.mensaje = "Consulta exitosa";
-                }
-                catch (Exception ex)
-                {
-                    respuesta.errores.Add(ex.Message+" "+ex.StackTrace);
-                    respuesta.data = null;
-                }
-                return respuesta;
+                    id = r.id,
+                    fkAsegurado = r.fkAsegurado,
+                    fkVehiculoAsegurado = r.fkVehiculoAsegurado,
+                    latitud = r.latitud,
+                    longitud = r.longitud,
+                    fechaDelReporte = r.fechaDelReporte,
+                    direccion = r.direccion,
+                    fkPersonal = r.fkPersonal,
+                    fkEstado = r.fkEstado,
+                    nombreCompleto = r.nombreCompleto,
+                    numeroDeLicencia = r.numeroDeLicencia,
+                    numeroDePlacas = r.numeroDePlacas,
+                    marca = r.marca,
+                    modelo = r.modelo,
+                    color = r.color,
+                    nombreAjustador = r.nombreAjustador,
+                    urlImagen1 = r.urlImagen1,
+                    urlImagen2 = r.urlImagen2,
+                    urlImagen3 = r.urlImagen3,
+                    urlImagen4 = r.urlImagen4,
+                    urlImagen5 = r.urlImagen5,
+                    urlImagen6 = r.urlImagen6,
+                    urlImagen7 = r.urlImagen7,
+                    urlImagen8 = r.urlImagen8,
+                    tipoDeCobertura = r.tipoDeCobertura,
+                    nombreDelCaso = r.nombreDelCaso
+                })
+                .ToListAsync(); */
+                
+                
+                //.ToListAsync();
+                //respuesta.data = reporteSinAjustador;
+                respuesta.mensaje = "Consulta exitosa";
+            }
+            catch (Exception ex)
+            {
+                respuesta.errores.Add(ex.Message + " " + ex.StackTrace);
+                respuesta.data = null;
+            }
+            return respuesta;
         }
+
     }
 }
 

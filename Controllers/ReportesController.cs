@@ -16,9 +16,10 @@ namespace SigesivServer.Controllers
     [Route("[controller]")]
     [ApiController]
     public class ReportesController : Controller
-    {  
+    {
         private ReportesRepository reportesRepository;
-        public ReportesController (){
+        public ReportesController()
+        {
             reportesRepository = new ReportesRepository();
         }
         [HttpPost("crearReporte")]
@@ -36,11 +37,12 @@ namespace SigesivServer.Controllers
             reporteConFotos.latitud = reporte.latitud;
             reporteConFotos.longitud = reporte.longitud;
             reporteConFotos.urlImagenes = reporte.urlImagenes;
+            reporteConFotos.direccion = reporte.direccion;
             ViewModelReporteDeIncidenteCompleto reporteCompletoBd = new ViewModelReporteDeIncidenteCompleto();
             // se crea objeto OtroInvolucrado  a partr de los datos del formulario
             OtroInvolucrado otroInvolucrado = null;
             GestorDeDatosDeOtrosInvolucrados gestor = new GestorDeDatosDeOtrosInvolucrados();
-            if (!reporte.otroInvolucrado1Nombre.IsNullOrEmpty() )
+            if (!reporte.otroInvolucrado1Nombre.IsNullOrEmpty())
             {
                 reporteCompletoBd.otrosInvolucrados = gestor.extraerOtrosInvolucradosDeFormulario(reporte);
             }
@@ -58,6 +60,18 @@ namespace SigesivServer.Controllers
             reporteCompletoBd.reporte = reporteConUrls;
             Console.WriteLine("Llamando a registro de reporte");
             var resultado = await reportesRepository.registrarReporteDeIncidente(reporteCompletoBd);
+            if (resultado.Value.id > 0)
+            {
+                response.status = 1;
+                response.mensaje = "Ha sido enviado tu reporte";
+                response.errores = null;
+            }
+            else
+            {
+                response.status = 0;
+                response.mensaje = "Error al enviar tu reporte";
+                response.errores = null;
+            }
             response.data = resultado.Value;
             return Created("/algo", response);
         }
@@ -93,11 +107,12 @@ namespace SigesivServer.Controllers
         }
 
         [HttpGet("obtenerReportesSinAsignar")]
-        public async Task<ActionResult<RespuestaTodosLosReportesSinAsignar>> consultarReportesSinAjustador()
+        public async Task<ActionResult<RespuestaTodosLosReportesSinAsignar>> consultarReportesSinAjustador([FromQuery] int skippedPages,[FromQuery] int pageSize)
         {
-            
-            var resultado = await reportesRepository.consultarReportesSinAjustador();
-            if(resultado.Value.data == null){
+
+            var resultado = await reportesRepository.consultarReportesSinAjustador(skippedPages,pageSize);
+            if (resultado.Value.data == null)
+            {
                 resultado.Value.status = 0;
             }
             resultado.Value.status = 1;
